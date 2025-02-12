@@ -1,25 +1,26 @@
 ---
+import outfit from '@font/outfit/files/outfit-latin-wght-normal.woff2?url'
+import '@/styles/fonts.css'
+import '@/styles/global.css'
+
 interface Props {
-  title: string
   class?: string
+  title?: string
 }
 
-const { title, class: className } = Astro.props
+const { class: className, title } = Astro.props
+const siteName = 'En La Mano'
 ---
 
 <html lang="es">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
-    <slot name="head" />
+    <title>{title ? `${title} - ${siteName}` : siteName}</title>
+    <link rel="icon" href="/favicon.png" type="image/png" />
+    <link rel="preload" href={outfit} as="font" type="font/woff2" crossorigin />
   </head>
-  <body
-    class:list={[
-      'bg-primary bg-linear-gradient bg-fixed text-neutral',
-      className
-    ]}
-  >
+  <body class:list={['min-h-svh', className]}>
     <slot />
   </body>
 </html>

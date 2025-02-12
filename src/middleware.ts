@@ -1,29 +1,21 @@
 import { defineMiddleware } from 'astro:middleware'
-import { auth } from './db'
+import paseto from 'paseto'
+import { publicKey } from './keys'
 
-export const onRequest = defineMiddleware(async (context, next) => {
-  const sessionId = context.cookies.get(auth.sessionCookieName)?.value ?? null
+const protectedRoutes = ['/admin']
 
-  if (sessionId) {
-    const { session, user } = await auth.validateSession(sessionId)
-    const { name, value, attributes } = session
-      ? auth.createSessionCookie(sessionId)
-      : auth.createBlankSessionCookie()
+export const onRequest = defineMiddleware(
+  async ({ url, cookies, redirect }, next) => {
+    if (protectedRoutes.includes(url.pathname)) {
+      const token = cookies.get('token')
 
-    context.cookies.set(name, value, attributes)
-
-    context.locals.session = session
-    context.locals.user = user
-
-    if (context.url.pathname === '/login') return context.redirect('/admin')
-  } else {
-    context.locals.session = null
-    context.locals.user = null
-
-    if (context.url.pathname.startsWith('/admin')) {
-      return context.redirect('/login')
+      try {
+        await paseto.V4.verify(token?.value || '', publicKey)
+      } catch {
+        return redirect('/admin/login')
+      }
     }
-  }
 
-  return next()
-})
+    return next()
+  }
+)

@@ -1,53 +1,37 @@
 ---
-import db from '@/db'
 import CMSLayout from '@/layouts/CMSLayout.astro'
-import EnLaMano from '@/components/admin/EnLaMano'
-
-const socialMedia = db.get<SocialMedia>('social-media')
-const video = db.get<string>('video', false)!
-const requestForm = db.get<RequestForm>('request-form')!
-const accepted = db.get<Status>('accepted')!
-const rejected = db.get<Status>('rejected')!
-
-if (Astro.request.method === 'POST') {
-  const formData = await Astro.request.formData()
-  const facebook = formData.get('facebook') || undefined
-  const instagram = formData.get('instagram') || undefined
-  const request = formData.getAll('request')
-  const accepted = formData.getAll('accepted')
-  const rejected = formData.getAll('rejected')
-
-  await Promise.all([
-    db.setImage(formData.get('logo') as File, 'logo.webp'),
-    db.setImage(formData.get('logo-light') as File, 'logo-light.webp')
-  ])
-
-  db.set('social-media', JSON.stringify({ facebook, instagram }))
-  db.set('video', formData.get('video') as string)
-  db.set(
-    'request-form',
-    JSON.stringify({ title: request[0], description: request[1] })
-  )
-  db.set(
-    'accepted',
-    JSON.stringify({ title: accepted[0], description: accepted[1] })
-  )
-  db.set(
-    'rejected',
-    JSON.stringify({ title: rejected[0], description: rejected[1] })
-  )
-
-  return Astro.redirect('/admin')
-}
+import InputImage from '@/components/InputImage'
+import Input from '@/components/Input'
+import Textarea from '@/components/Textarea'
 ---
 
 <CMSLayout>
-  <EnLaMano
-    socialMedia={socialMedia}
-    video={video}
-    requestForm={requestForm}
-    accepted={accepted}
-    rejected={rejected}
-    client:load
-  />
+  <section class="lg:grid lg:grid-cols-2 lg:gap-x-6">
+    <InputImage label="Logo" name="logo" client:idle />
+    <InputImage
+      class="bg-blue-950"
+      label="Logo Blanco"
+      name="logo-white"
+      client:idle
+    />
+    <Input
+      class="mb-6 break-inside-avoid"
+      type="text"
+      label="Facebook"
+      target="data.facebook"
+      client:load
+    />
+    <Input
+      class="mb-6 break-inside-avoid"
+      type="text"
+      label="Instagram"
+      target="data.instagram"
+      client:load
+    />
+    <Textarea
+      label="Descripción del formulario"
+      target="data.formDescription"
+      client:load
+    />
+  </section>
 </CMSLayout>

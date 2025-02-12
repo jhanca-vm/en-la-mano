@@ -1,106 +1,45 @@
 ---
-import { actions } from 'astro:actions'
+import paseto from 'paseto'
+import { db, eq, Page } from 'astro:db'
+import { publicKey } from '@/keys'
 import SiteLayout from '@/layouts/SiteLayout.astro'
-import Input from '@/components/Input.astro'
-import Select from '@/components/Select.astro'
-import Button from '@/components/Button.astro'
+import FormComponent from '@/components/Form'
 
-const docNumber = Astro.request.headers.get('Doc-Number')
+interface Data {
+  formDescription: string
+}
 
-if (!docNumber) return Astro.redirect('/')
+let data: Data
+let docNumber: string
 
-const activities = [
-  'Privado',
-  'Público',
-  'Jubilado',
-  'Independiente',
-  'Desempleado'
-]
+try {
+  const { sub } = await paseto.V4.verify(
+    Astro.url.searchParams.get('token') || '',
+    publicKey
+  )
+
+  const [result] = await db.select().from(Page).where(eq(Page.pattern, '*'))
+
+  data = result.data as Data
+  docNumber = sub as string
+} catch {
+  return Astro.redirect('/')
+}
 ---
 
 <SiteLayout>
   <section
     class:list={[
-      'max-w-[71rem] mx-auto mt-40 mb-32 flex flex-col gap-[4.25rem] px-5',
-      'sm:px-10 sm:mt-44 lg:px-20 xl:flex-row'
+      'mt-12 px-5 flex flex-col gap-16 sm:px-10 md:px-20 lg:flex-row',
+      'lg:justify-center'
     ]}
   >
-    <div class="flex-1">
-      <h1 class="font-extrabold text-[2.5rem]/[1.03] xl:w-48">
-        Completá tus datos
+    <div class="lg:basis-50 xl:basis-67">
+      <h1 class="font-bold text-4xl">
+        Completá <span class="block sm:inline lg:block">tus datos</span>
       </h1>
-      <p class="mt-8 font-light leading-[1.25]">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat.
-      </p>
+      <p class="mt-8 font-light leading-snug">{data.formDescription}</p>
     </div>
-    <form
-      class:list={[
-        'w-full mx-auto grid gap-y-7 gap-x-8 p-7 pb-6 bg-neutral rounded-3xl',
-        'font-manrope text-primary md:grid-cols-2 xl:max-w-[40rem]'
-      ]}
-      method="POST"
-      action={actions.confirmRequest}
-    >
-      <Input type="text" name="firstName" placeholder="Nombre" required />
-      <Input type="text" name="lastName" placeholder="Apellido" required />
-      <Input
-        type="number"
-        name="docNumber"
-        placeholder="Cédula"
-        value={docNumber}
-      />
-      <Input type="email" name="email" placeholder="Email" />
-      <Select
-        class="md:col-start-2 md:row-start-1"
-        name="activityType"
-        placeholder="Actividad laboral"
-        required
-      >
-        {
-          activities.map(activity => (
-            <option class="text-primary">{activity}</option>
-          ))
-        }
-      </Select>
-      <Input
-        class="md:col-start-2 md:row-start-2"
-        type="number"
-        name="salary"
-        placeholder="Salario mensual"
-        required
-      />
-      <Input
-        class="text-[#a9a9ab] md:col-start-2 md:row-start-3"
-        type="date"
-        name="dateOfBirth"
-        label="Fecha de nacimiento"
-        required
-      />
-      <Input
-        class="text-[#a9a9ab]"
-        type="date"
-        name="workStartDate"
-        label="Fecha en la que ingresó a su trabajo actual"
-        required
-      />
-      <Button class="mt-2.5">Solicitar efectivo</Button>
-    </form>
+    <FormComponent docNumber={docNumber} client:idle />
   </section>
 </SiteLayout>
-
-<script>
-  const elements = [
-    document.querySelector('select')!,
-    ...document.querySelectorAll<HTMLInputElement>('input[type="date"]')
-  ]
-
-  for (const element of elements) {
-    element.addEventListener('change', () => {
-      console.log('dd')
-      element.classList.replace('text-[#a9a9ab]', 'text-primary')
-    })
-  }
-</script>

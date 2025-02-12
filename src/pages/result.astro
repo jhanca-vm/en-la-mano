@@ -1,24 +1,56 @@
 ---
-import { marked } from 'marked'
-import db from '@/db'
+import paseto from 'paseto'
+import { publicKey } from '@/keys'
 import SiteLayout from '@/layouts/SiteLayout.astro'
 
-const status = Astro.request.headers.get('Status')
+interface Data {
+  formDescription: string
+}
 
-if (!status) return Astro.redirect('/')
+let result: string | null
 
-const { title, description } = db.get<Status>(status)!
+try {
+  const payload = await paseto.V4.verify(
+    Astro.url.searchParams.get('token') || '',
+    publicKey
+  )
+
+  result = payload.result as string | null
+} catch {
+  return Astro.redirect('/')
+}
 ---
 
 <SiteLayout>
-  <section class="max-w-4xl m-auto py-36 px-5 text-center sm:px-10 lg:px-20">
-    <h1
-      class="text-[2.5rem]/none text-warning mb-10"
-      set:html={marked.parseInline(title)}
-    />
-    <p
-      class="font-light leading-tight"
-      set:html={marked.parseInline(description, { breaks: true })}
-    />
+  <section
+    class="max-w-3xl m-auto px-10 pt-12 pb-24 text-center md:px-20 md:pb-32"
+  >
+    <h1 class="mb-10 text-4xl/tight text-orange-500 text-pretty">
+      {
+        !result
+          ? 'Tu préstamo está casi pronto'
+          : result === 'Pre-Lead Repetido rechazado' ||
+              result === 'Lead Repetido rechazado'
+            ? 'Ya estamos trabajando en tu solicitud'
+            : 'En este momento no podemos ofrecerte un préstamo'
+      }
+    </h1>
+    <p class="font-light text-lg">
+      {
+        !result
+          ? 'Estamos analizando los detalles y podemos ofrecerte un ' +
+            'préstamo. En breve te contactaremos para que sigas avanzando. ' +
+            '¡Quedate atento!'
+          : result === 'Pre-Lead Repetido rechazado' ||
+              result === 'Lead Repetido rechazado'
+            ? 'Tenemos tus datos y estamos analizando tu perfil. Pronto te ' +
+              'daremos una respuesta para ofrecerte el SÍ que necesitás. ' +
+              '¡Gracias por tu paciencia!'
+            : 'Por ahora no contamos con una opción que se ajuste a tus ' +
+              'necesidades, pero no te preocupes: nuestros asesores seguirán ' +
+              'evaluando tu perfil para ofrecerte pronto el Sí que estás ' +
+              'buscando.'
+      }
+    </p>
   </section>
 </SiteLayout>

@@ -1,0 +1,35 @@
+---
+import { Image } from 'astro:assets'
+import { marked } from 'marked'
+
+interface Props {
+  name: string
+  bannerText?: string
+}
+
+const { name, bannerText } = Astro.props
+---
+
+<section class="relative my-5 px-5 sm:px-0">
+  <figure class="absolute inset-0 my-auto hidden h-100 bg-cover sm:block">
+    <Image
+      class="w-full h-100 object-cover"
+      src={`${Astro.url.origin}/images/${name}-banner`}
+      alt=""
+      inferSize
+    />
+    {
+      bannerText && (
+        <figcaption
+          class:list={[
+            'absolute left-10 bottom-14 hidden font-extralight text-4xl',
+            '[&_strong]:font-semibold [&_strong]:text-purple-500 md:block',
+            'lg:left-20 lg:text-6xl xl:left-25'
+          ]}
+          set:html={marked.parseInline(bannerText, { breaks: true })}
+        />
+      )
+    }
+  </figure>
+  <slot />
+</section>

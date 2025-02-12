@@ -15,20 +15,25 @@ interface Data {
   landings: { name: string; bannerText: string }[]
 }
 
+const { name } = Astro.params
+
 const [result] = await db
   .select()
   .from(Page)
   .where(eq(Page.pattern, '/landings'))
 
 const data = result.data as Data
-const { bannerText } = data.landings.find(({ name }) => name === 'home') || {}
+const landing = data.landings.find((landing) => landing.name === name)
+
+if (!landing) return Astro.rewrite('/404')
+
 const requirements = await marked.parse(data.requirements)
 const videoid = new URL(data.video).searchParams.get('v')
 ---
 
 <SiteLayout>
-  <LandingHero name="home" bannerText={bannerText}>
-    <LandingForm source="home" client:idle>
+  <LandingHero name={name!} bannerText={landing.bannerText}>
+    <LandingForm source={name!} client:idle>
       <Fragment set:html={marked.parse(data.offer, { breaks: true })} />
     </LandingForm>
   </LandingHero>

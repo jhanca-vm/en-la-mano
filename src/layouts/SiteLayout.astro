@@ -1,48 +1,115 @@
 ---
-import Header from '@/components/Header.astro'
-import Image from '@/components/Image.astro'
-import Footer from '@/components/Footer.astro'
+import { db, eq, Page } from 'astro:db'
+import { Image } from 'astro:assets'
 import BaseLayout from './BaseLayout.astro'
-import '@/styles/graphie.css'
-import '@/styles/manrope.css'
-import 'tailwindcss/tailwind.css'
+import Nav from '@/components/Nav'
+import SocialMedia from '@/components/SocialMedia.astro'
 
-interface Props {
-  sticky?: boolean
+interface Data {
+  facebook: string
+  instagram: string
 }
+
+const { pathname, origin } = Astro.url
+const isLanding = pathname === '/' || pathname.startsWith('/landing/')
+const [result] = await db.select().from(Page).where(eq(Page.pattern, '*'))
+const data = result.data as Data
 ---
 
-<BaseLayout title="En La Mano">
-  <Fragment slot="head">
-    <link
-      rel="preload"
-      href="/fonts/graphie-regular.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="/fonts/graphie-bold.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-  </Fragment>
-  <Header sticky={Astro.props.sticky} />
-  <main class="min-h-svh flex flex-col">
+<BaseLayout
+  class:list={[
+    'flex flex-col bg-linear-108 from-purple-500 from-[-18.5%] via-purple-900',
+    'via-34% to-blue-950 to-[88.5%] text-neutral-100'
+  ]}
+>
+  <header class="z-10 flex">
+    <div
+      class:list={[
+        { ' rounded-full shadow-2xl bg-neutral-100 text-blue-900': isLanding },
+        'w-full m-5 py-2.5 px-5 flex items-center justify-between md:mx-10',
+        'md:my-8 md:px-10 xl:mx-15'
+      ]}
+    >
+      <Image
+        class="w-auto h-12"
+        src={`${origin}/images/${isLanding ? 'logo' : 'logo-white'}`}
+        alt="Préstamos - En La Mano"
+        inferSize
+      />
+      <Nav pathname={pathname} client:media="(width < 768px)" />
+      <SocialMedia
+        class={isLanding ? 'text-purple-900' : 'text-neutral-100'}
+        facebook={data.facebook}
+        instagram={data.instagram}
+      />
+    </div>
+  </header>
+  <main class="grow flex flex-col">
     <slot />
   </main>
-  <div class="fixed bottom-4 right-5 flex gap-3.5 sm:right-10 xl:right-15">
-    <Image class="w-[3.25rem]" src="/images/unit.webp" alt="UNIT" />
-    <a
-      class="size-[3.25rem] grid place-items-center bg-success rounded-full"
-      href="https://wa.me/59891866565"
-      target="_blank"
-      rel="noreferrer"
+  <footer
+    class:list={[
+      'px-5 py-15 flex flex-col gap-15 bg-linear-88 from-neutral-300',
+      'from-[-19.5%] to-neutral-100 to-[122.5%] text-blue-900 sm:flex-row',
+      'sm:justify-between md:px-10 lg:px-20 xl:px-25'
+    ]}
+  >
+    <nav
+      class:list={[
+        'flex flex-col items-center gap-3 *:underline *:hover:opacity-90',
+        'sm:items-start xl:grid xl:grid-cols-2 xl:gap-x-15'
+      ]}
     >
-      <Image src="/icons/whatsapp.svg" alt="WhatsApp" />
-    </a>
-  </div>
-  <Footer />
+      <a href="/terminos-y-condiciones">Términos y Condiciones</a>
+      <a class="xl:row-start-2" href="/preguntas-frecuentes">
+        Preguntas frecuentes
+      </a>
+      <a href="/politicas-de-privacidad">Políticas de Privacidad</a>
+      <a href="/politicas-de-seguridad">Políticas de Seguridad </a>
+    </nav>
+    <section
+      class:list={[
+        'flex flex-col items-center gap-3 sm:items-end xl:grid xl:grid-cols-2',
+        'xl:gap-x-0'
+      ]}
+    >
+      <figure class="flex items-center gap-2">
+        <img
+          src="/icons/whatsapp.svg"
+          alt="WhatsApp"
+          width="17"
+          height="17"
+          loading="lazy"
+        />
+        <figcaption>(+598) 091 866 454</figcaption>
+      </figure>
+      <figure class="flex items-center gap-2 xl:row-start-2">
+        <img
+          src="/icons/phone.svg"
+          alt="WhatsApp"
+          width="17"
+          height="17"
+          loading="lazy"
+        />
+        <figcaption>(+598) 2605 4699</figcaption>
+      </figure>
+      <div class="flex items-center gap-2">
+        <img
+          src="/icons/mail.svg"
+          alt=""
+          width="19"
+          height="16"
+          loading="lazy"
+        />
+        <a class="hover:underline" href="mailto:contacto@enlamano.com.uy">
+          contacto@enlamano.com.uy
+        </a>
+      </div>
+      <SocialMedia
+        class="text-purple-900"
+        facebook={data.facebook}
+        instagram={data.instagram}
+      />
+    </section>
+  </footer>
 </BaseLayout>

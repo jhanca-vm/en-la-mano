@@ -1,21 +1,23 @@
 ---
-import Sidebar from '@/components/admin/Sidebar.astro'
+import { db, eq, Image, Page } from 'astro:db'
+import Sidebar from '@/components/Sidebar'
+import Content from '@/components/Content'
 import BaseLayout from './BaseLayout.astro'
-import '@/styles/manrope.css'
-import 'tailwindcss/tailwind.css'
+
+const { pathname } = Astro.url
+const pattern = pathname.split('admin')[1] || '*'
+const [initialState] = await db
+  .select()
+  .from(Page)
+  .where(eq(Page.pattern, pattern))
 ---
 
-<BaseLayout class="font-manrope" title="CMS">
-  <link
-    slot="head"
-    rel="preload"
-    href="/fonts/manrope.woff2"
-    as="font"
-    type="font/woff2"
-    crossorigin
-  />
-  <Sidebar />
-  <main class="p-5 sm:ml-60">
+<BaseLayout class="bg-neutral-100 text-blue-900 md:flex">
+  <Sidebar pathname={pathname} client:media="(width < 768px)" />
+  <Content
+    initialState={JSON.stringify(initialState || { pattern, data: {} })}
+    client:load
+  >
     <slot />
-  </main>
+  </Content>
 </BaseLayout>

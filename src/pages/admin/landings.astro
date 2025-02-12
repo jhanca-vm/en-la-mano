@@ -1,25 +1,15 @@
 ---
-import db from '@/db'
-import saveImages from '@/utils/saveImages'
-import removeOrphanImages from '@/utils/removeOrphanImages'
 import CMSLayout from '@/layouts/CMSLayout.astro'
-import LandingsPage from '@/components/admin/Landings'
-
-const landings = db.get<string[]>('landings')!
-
-if (Astro.request.method === 'POST') {
-  const formData = await Astro.request.formData()
-  const banners = formData.getAll('landings-image') as string[]
-  const data = await saveImages(formData.getAll('landings'), 4, 1, banners)
-
-  db.set('landings', JSON.stringify(data))
-
-  removeOrphanImages([landings], [data], [1])
-
-  return Astro.redirect('/admin/landings')
-}
+import Textarea from '@/components/Textarea'
+import Input from '@/components/Input'
+import LandingList from '@/components/LandingList'
 ---
 
 <CMSLayout>
-  <LandingsPage data={landings} client:load />
+  <section class="lg:grid lg:grid-cols-2 lg:gap-6">
+    <Textarea label="Oferta" target="data.offer" client:load />
+    <Textarea label="Requisitos" target="data.requirements" client:load />
+    <Input type="url" label="Video" target="data.video" client:load />
+  </section>
+  <LandingList client:load />
 </CMSLayout>

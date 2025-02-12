@@ -1,32 +1,26 @@
 ---
-import db from '@/db'
-
 interface Props {
-  neutral?: boolean
-  animate?: boolean
+  class?: string
+  facebook: string
+  instagram: string
 }
 
-const { neutral, animate } = Astro.props
-const socialMedia = db.get<SocialMedia>('social-media')
+const { class: className, facebook, instagram } = Astro.props
 ---
 
-<div
-  class:list={[
-    'flex gap-x-4',
-    { 'text-tertiary': !neutral },
-    { 'scroll-reset': animate }
-  ]}
->
+<div class:list={['flex gap-4', className]}>
   <a
-    class="transition-colors duration-75 hover:opacity-90"
-    href={`https://www.facebook.com/${socialMedia?.facebook}`}
+    class="transition-opacity hover:opacity-90"
+    href={`https://www.facebook.com/${facebook}`}
     target="_blank"
     rel="noreferrer"
+    aria-label="Facebook"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      class="w-7 fill-current"
+      class="w-6.75 fill-current"
       viewBox="0 0 27 27"
+      aria-hidden="true"
     >
       <path
         d="M13.5 0C6.056 0 0 6.056 0 13.5 0 20.943 6.056 27 13.5 27 20.943 27 27 20.943 27 13.5 27 6.056 20.944 0 13.5 0Zm3.357 13.975h-2.196v7.829h-3.255v-7.829H9.86V11.21h1.547v-1.79c0-1.282.61-3.285 3.285-3.285l2.412.01v2.685h-1.75c-.286 0-.69.143-.69.754v1.626h2.479l-.285 2.766Z"
@@ -34,21 +28,22 @@ const socialMedia = db.get<SocialMedia>('social-media')
     </svg>
   </a>
   <a
-    class="transition-colors duration-75 hover:opacity-90"
-    href={socialMedia?.instagram &&
-      `https://www.instagram.com/${socialMedia.instagram}/`}
+    class="transition-opacity hover:opacity-90"
+    href={`https://www.instagram.com/${instagram}/`}
     target="_blank"
     rel="noreferrer"
+    aria-label="Instagram"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      class="w-7 fill-current"
+      class="w-6.75 fill-current"
       viewBox="0 0 27 27"
+      aria-hidden="true"
     >
       <path
         fill-rule="evenodd"
         d="M13.5 0C20.956 0 27 6.044 27 13.5S20.956 27 13.5 27 0 20.956 0 13.5 6.044 0 13.5 0Zm-2.825 6.69c-2.54.116-3.873 1.546-3.984 3.985a63.062 63.062 0 0 0 0 5.65c.11 2.44 1.445 3.869 3.984 3.985a63.51 63.51 0 0 0 5.65 0c2.44-.112 3.869-1.444 3.985-3.985.083-1.848.083-3.801 0-5.65-.114-2.486-1.498-3.87-3.985-3.985a63.472 63.472 0 0 0-5.65 0Zm5.594 1.234c1.845.084 2.724.962 2.807 2.808a61.277 61.277 0 0 1 0 5.536c-.086 1.899-1.01 2.726-2.807 2.808-1.81.083-3.727.083-5.537 0-1.798-.082-2.722-.909-2.808-2.808a61.72 61.72 0 0 1 0-5.536c.082-1.798.91-2.722 2.808-2.808a61.734 61.734 0 0 1 5.537 0Zm-2.769 7.86a2.283 2.283 0 1 1 0-4.567 2.283 2.283 0 0 1 0 4.566Zm0-5.802a3.518 3.518 0 1 0 .001 7.037 3.518 3.518 0 0 0-.001-7.037Zm4.48-.14a.823.823 0 1 1-1.646 0 .823.823 0 0 1 1.645 0Z"
-      ></path>
+        clip-rule="evenodd"></path>
     </svg>
   </a>
 </div>

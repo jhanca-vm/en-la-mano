@@ -1,60 +1,64 @@
 ---
-import { marked } from 'marked'
-import Image from './Image.astro'
-
-const { title, list, requirements } = Astro.props as Steps
+const list = [
+  {
+    icon: 'pencil',
+    width: '34',
+    height: '34',
+    description: 'Ingresá tu cédula y número de celular'
+  },
+  {
+    icon: 'check-white',
+    width: '34',
+    height: '28',
+    description: 'Completá el formulario y recibí la aprobación'
+  },
+  {
+    icon: 'wallet',
+    width: '36',
+    height: '36',
+    description: '¡Ya podés retirar el dinero!'
+  }
+]
 ---
 
-<section class="my-20 px-5 text-center sm:px-10 lg:px-20">
-  <h2
-    class:list={[
-      'text-3xl/normal [&_strong]:font-extrabold [&_strong]:text-secondary',
-      'sm:text-[2.5rem]'
-    ]}
-    set:html={marked.parseInline(title)}
-  />
-  <div class="mt-10 grid justify-center gap-10 md:grid-flow-col">
-    {
-      list.map(([image, content], index) => (
-        <>
-          {index > 0 && (
-            <Image
-              class="mx-auto transform rotate-90 md:mt-8 md:rotate-0"
-              src="/icons/chevron.svg"
-            />
-          )}
-          <article>
-            <figure
-              class:list={[
-                'size-[4.75rem] mx-auto grid place-items-center border',
-                'border-secondary rounded-full'
-              ]}
+<h2 class="mb-12 font-light text-center text-4xl text-pretty">
+  Tu préstamo en <strong class="font-bold text-purple-500">3 pasos</strong>
+</h2>
+<ol class="flex flex-col items-center justify-center text-center lg:flex-row">
+  {
+    list.map(({ icon, description, ...size }, index) => (
+      <>
+        {index !== 0 && (
+          <li class="m-10 lg:mt-0 lg:mb-16" aria-hidden="true">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-2 fill-none stroke-purple-500 rotate-90 lg:rotate-0"
+              viewBox="0 0 6 12"
             >
-              <Image class="w-[2.125rem]" src={`/assets/${image}`} />
-            </figure>
-            <p
-              class="mt-4 font-light leading-[1.15]"
-              set:html={marked.parseInline(content, { breaks: true })}
-            />
-          </article>
-        </>
-      ))
-    }
-  </div>
-  <h3 class="mt-14 mb-7 font-bold text-2xl/loose">Requisitos</h3>
-  <ul
-    class:list={[
-      'max-w-5xl mx-auto list-disc pl-[1em] text-left font-light text-lg/5',
-      'marker:text-warning md:columns-2 md:gap-x-16 lg:columns-3'
-    ]}
-  >
-    {
-      requirements.map(requirement => (
-        <li class="mt-4 break-inside-avoid text-pretty first:mt-0">
-          {requirement}
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M.5 1s5 3.682 5 5-5 5-5 5"
+              />
+            </svg>
+          </li>
+        )}
+        <li>
+          <figure
+            class:list={[
+              'mx-auto size-[76px] grid place-items-center rounded-full ring',
+              'ring-purple-500'
+            ]}
+          >
+            <img src={`/icons/${icon}.svg`} alt="" {...size} loading="lazy" />
+          </figure>
+          <p class="mt-4 w-48 font-light text-lg/tight text-pretty">
+            {description}
+          </p>
         </li>
-      ))
-    }
-  </ul>
-  
-</section>
+      </>
+    ))
+  }
+</ol>
+<h3 class="mt-20 mb-10 font-semibold text-center text-2xl">Requisitos</h3>
+<slot />
