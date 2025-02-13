@@ -2,7 +2,15 @@ import { defineMiddleware } from 'astro:middleware'
 import paseto from 'paseto'
 import { publicKey } from './keys'
 
-const protectedRoutes = ['/admin']
+const protectedRoutes = [
+  '/admin',
+  '/admin/landings',
+  '/admin/quienes-somos',
+  '/admin/preguntas-frecuentes',
+  '/admin/terminos-y-condiciones',
+  '/admin/politicas-de-privacidad',
+  '/admin/politicas-de-seguridad'
+]
 
 export const onRequest = defineMiddleware(
   async ({ url, cookies, redirect }, next) => {

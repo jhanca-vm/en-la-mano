@@ -1,0 +1,24 @@
+---
+interface Props {
+  class?: string
+}
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  class:list={[
+    Astro.props.class,
+    'w-3.5 fill-none stroke-current stroke-[1.25]'
+  ]}
+  viewBox="0 0 14 19"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path
+    d="M1 6.833c0-2.75 0-4.124.854-4.979C2.71 1 4.084 1 6.834 1c2.75 0 4.124 0 4.978.854.855.855.855 2.23.855 4.98v5c0 2.75 0 4.124-.855 4.978-.854.855-2.229.855-4.979.855s-4.124 0-4.979-.855C1 15.958 1 14.583 1 11.833v-5Z"
+  ></path>
+  <path d="M6 15.166h1.667"></path>
+  <path
+    d="m4.334 1 .074.445c.16.964.241 1.447.572 1.74.345.306.834.315 1.854.315s1.509-.009 1.854-.315c.33-.293.411-.776.572-1.74L9.334 1"
+  ></path>
+</svg>

@@ -1,7 +1,7 @@
 import { useSignal } from '@preact/signals'
 import { actions } from 'astro:actions'
 import clsx from 'clsx/lite'
-import IconPhotoUp from './IconPhotoUp'
+import IconPhotoUp from './icons/PhotoUp'
 
 interface Props {
   class?: string
@@ -11,6 +11,7 @@ interface Props {
 
 export default function InputImage({ class: className, label, name }: Props) {
   const isLoading = useSignal(false)
+  const image = useSignal(`/images/${name}`)
 
   function handleChange(event: Event) {
     const eventTarget = event.target as HTMLInputElement
@@ -24,6 +25,7 @@ export default function InputImage({ class: className, label, name }: Props) {
 
         await actions.setImage({ name, data: reader.result as string })
 
+        image.value = reader.result as string
         isLoading.value = false
       }
 
@@ -37,16 +39,18 @@ export default function InputImage({ class: className, label, name }: Props) {
         <label class="font-display text-sm" for={name}>
           {label}
         </label>
-        <label class="text-orange-500 hover:text-orange-500/80">
-          <IconPhotoUp />
-          <input
-            class="sr-only"
-            type="file"
-            id={name}
-            accept="image/*"
-            onChange={handleChange}
-          />
-        </label>
+        {!isLoading.value && (
+          <label class="text-orange-500 hover:text-orange-500/80">
+            <IconPhotoUp />
+            <input
+              class="sr-only"
+              type="file"
+              id={name}
+              accept="image/*"
+              onChange={handleChange}
+            />
+          </label>
+        )}
       </header>
       <figure
         class={clsx(
@@ -56,7 +60,7 @@ export default function InputImage({ class: className, label, name }: Props) {
           isLoading.value && 'bg-neutral-400/25 animate-pulse'
         )}
       >
-        {!isLoading.value && <img src={`/images/${name}`} alt={label} />}
+        {!isLoading.value && <img src={image.value} alt="" />}
       </figure>
     </div>
   )

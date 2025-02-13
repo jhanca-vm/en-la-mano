@@ -1,6 +1,6 @@
 import { useSignal } from '@preact/signals'
 import clsx from 'clsx/lite'
-import IconMenu from './IconMenu'
+import IconMenu from './icons/Menu'
 
 interface Props {
   pathname: string
@@ -10,7 +10,15 @@ export default function Sidebar({ pathname }: Props) {
   const isOpen = useSignal(false)
   const links = [
     { href: '/admin', label: 'En La Mano' },
-    { href: '/admin/landings', label: 'Landings' }
+    { href: '/admin/landings', label: 'Landings' },
+    { href: '/admin/quienes-somos', label: 'Quiénes Somos' },
+    { href: '/admin/preguntas-frecuentes', label: 'Preguntas Frecuentes' },
+    { href: '/admin/terminos-y-condiciones', label: 'Términos y Condiciones' },
+    {
+      href: '/admin/politicas-de-privacidad',
+      label: 'Políticas de Privacidad'
+    },
+    { href: '/admin/politicas-de-seguridad', label: 'Políticas de Seguridad' }
   ]
 
   function handleClick({ target, currentTarget }: MouseEvent) {

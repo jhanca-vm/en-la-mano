@@ -12,6 +12,7 @@ interface Props {
   placeholder?: string
   value?: string
   required?: boolean
+  fixed?: boolean
   onInput?: (event: InputEvent) => void
 }
 
@@ -23,6 +24,7 @@ export default function Textarea({
   placeholder,
   value,
   required,
+  fixed,
   onInput
 }: Props) {
   function handleInput(event: InputEvent) {
@@ -48,9 +50,10 @@ export default function Textarea({
       )}
       <textarea
         class={clsx(
-          'w-full py-2 px-5 rounded-[1.25rem] font-display text-sm resize-none',
-          'outline-1 -outline-offset-1 outline-blue-950',
-          'placeholder:text-neutral-400 focus:outline-2',
+          'w-full py-2 px-5 rounded-[1.25rem] font-display text-sm',
+          !fixed && 'field-sizing-content',
+          'resize-none outline-1 -outline-offset-1',
+          'outline-blue-950 placeholder:text-neutral-400 focus:outline-2',
           'focus:-outline-offset-2 focus:outline-orange-500'
         )}
         rows={4}

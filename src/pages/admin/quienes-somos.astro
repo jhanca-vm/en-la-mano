@@ -1,0 +1,44 @@
+---
+import CMSLayout from '@/layouts/CMSLayout.astro'
+import Textarea from '@/components/Textarea'
+import Input from '@/components/Input'
+import InputImage from '@/components/InputImage'
+---
+
+<CMSLayout>
+  <section class="lg:columns-2 lg:gap-6">
+    <Textarea
+      class="mb-6 break-inside-avoid"
+      label="Misión"
+      target="data.mission"
+      client:load
+    />
+    <Textarea
+      class="mb-6 break-inside-avoid"
+      label="Visión"
+      target="data.vision"
+      client:load
+    />
+    <Textarea
+      class="mb-6 break-inside-avoid"
+      label="Valores"
+      target="data.values"
+      client:load
+    />
+  </section>
+  <section class="my-12 lg:columns-2 lg:gap-6">
+    <Input
+      class="mb-6 break-inside-avoid"
+      label="Título"
+      target="data.title"
+      client:load
+    />
+    <Textarea
+      class="mb-6 break-inside-avoid"
+      label="Descripción"
+      target="data.description"
+      client:load
+    />
+    <InputImage label="Imagen" name="about" client:idle />
+  </section>
+</CMSLayout>

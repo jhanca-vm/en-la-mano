@@ -1,6 +1,6 @@
 {
   "name": "en-la-mano",
-  "version": "2.0.0-alpha.1",
+  "version": "2.0.0",
   "scripts": {
     "dev": "astro dev --remote",
     "push": "astro db push",
@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@astrojs/db": "^0.14.6",
-    "@astrojs/node": "^9.0.2",
+    "@astrojs/node": "^9.0.3",
     "@astrojs/preact": "^4.0.4",
     "@fontsource-variable/manrope": "^5.1.1",
     "@fontsource-variable/outfit": "^5.1.1",
@@ -17,7 +17,7 @@
     "@preact/signals": "^2.0.1",
     "@tailwindcss/vite": "^4.0.6",
     "argon2": "^0.41.1",
-    "astro": "^5.2.5",
+    "astro": "^5.2.6",
     "clsx": "^2.1.1",
     "just-clone": "^6.2.0",
     "just-debounce-it": "^3.2.0",

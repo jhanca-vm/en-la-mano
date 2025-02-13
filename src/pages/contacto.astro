@@ -1,0 +1,61 @@
+---
+import { db, eq, Page } from 'astro:db'
+import SiteLayout from '@/layouts/SiteLayout.astro'
+import IconMail from '@/components/icons/Mail.astro'
+import IconMobile from '@/components/icons/Mobile.astro'
+import IconPhone from '@/components/icons/Phone.astro'
+import IconInstagram from '@/components/icons/Instagram.astro'
+import IconFacebook from '@/components/icons/Facebook.astro'
+import IconArrow from '@/components/icons/Arrow'
+import Hero from '@/components/Hero.astro'
+import Input from '@/components/Input'
+import Textarea from '@/components/Textarea'
+import Button from '@/components/Button'
+
+interface Data {
+  instagram: string
+  facebook: string
+}
+
+const [result] = await db.select().from(Page).where(eq(Page.pattern, '*'))
+const { instagram, facebook } = result.data as Data
+---
+
+<SiteLayout class="absolute">
+  <Hero class="bg-[url(/images/contact-hero.webp)]" title="Contacto" />
+  <section
+    class:list={[
+      'max-w-3xl self-center mt-20 mb-24 px-5 flex flex-col gap-y-24 gap-x-18',
+      'sm:flex-row md:px-10 md:gap-x-24'
+    ]}
+  >
+    <div class="font-light">
+      <h2 class="mb-12 font-semibold text-2xl">Encontranos en</h2>
+      <ul
+        class:list={[
+          'space-y-7 *:grid *:grid-cols-[1.1875rem_1fr] *:items-center',
+          '*:gap-2.5 [&_svg]:justify-self-center'
+        ]}
+      >
+        <li><IconMail class="text-orange-500" /> contacto@enlamano.com.uy</li>
+        <li><IconMobile class="text-orange-500" /> (+598) 091 866 454</li>
+        <li><IconPhone class="text-orange-500" /> (+598) 2605 4699</li>
+        <li><IconInstagram /> @{instagram}</li>
+        <li><IconFacebook /> @{facebook}</li>
+      </ul>
+    </div>
+    <form class="p-8 rounded-4xl bg-neutral-100 text-blue-900">
+      <p class="leading-tight text-balance">
+        Dejanos un mensaje y nos contactaremos a la brevedad
+      </p>
+      <div class="my-5 space-y-3">
+        <Input placeholder="Nombre y Apellido" />
+        <Input placeholder="Asunto" />
+        <Input type="email" placeholder="Email" />
+        <Input type="number" placeholder="Celular" />
+        <Textarea placeholder="Mensaje" fixed />
+      </div>
+      <Button class="flex items-center">Enviar <IconArrow /></Button>
+    </form>
+  </section>
+</SiteLayout>

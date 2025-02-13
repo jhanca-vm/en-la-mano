@@ -4,18 +4,18 @@ import set from 'just-safe-set'
 import { actions } from 'astro:actions'
 import clsx from 'clsx/lite'
 import { json, reset, state } from '@/store'
-import Input from './Input'
-import IconTrash from './IconTrash'
-import InputImage from './InputImage'
-import Textarea from './Textarea'
-import Button from './Button'
+import IconTrash from '@/components/icons/Trash'
+import Input from '@/components/Input'
+import InputImage from '@/components/InputImage'
+import Textarea from '@/components/Textarea'
+import Button from '@/components/Button'
 
 interface Landing {
   name: string
   bannerText: string
 }
 
-export default function LandingList() {
+export default function List() {
   const isLoading = useSignal(false)
   const name = useSignal('')
   const landings: Landing[] = state.value.data?.landings || []
@@ -94,7 +94,7 @@ export default function LandingList() {
           Añadir
         </Button>
       </form>
-      {landings.map(({ name, bannerText }) => (
+      {landings.map(({ name, bannerText }, index) => (
         <div
           class={clsx('my-12', isLoading.value && 'opacity-50 animate-pulse')}
           key={name}
@@ -117,6 +117,7 @@ export default function LandingList() {
             <InputImage label="Imagen del banner" name={`${name}-banner`} />
             <Textarea
               label="Texto del banner"
+              name={`${name}-banner-text`}
               value={bannerText}
               onInput={(event) => handleInput(event, name)}
             />

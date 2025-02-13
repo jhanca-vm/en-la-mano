@@ -1,0 +1,10 @@
+---
+import CMSLayout from '@/layouts/CMSLayout.astro'
+import Textarea from '@/components/Textarea'
+import List from './_List'
+---
+
+<CMSLayout>
+  <Textarea label="Descripción" target="data.description" client:load />
+  <List client:load />
+</CMSLayout>

@@ -1,0 +1,63 @@
+---
+import { db, eq, Page } from 'astro:db'
+import { marked } from 'marked'
+import SiteLayout from '@/layouts/SiteLayout.astro'
+import Hero from '@/components/Hero.astro'
+
+interface Data {
+  description: string
+  questions: Array<[string, { question: string; answer: string }]>
+}
+
+const { pathname } = Astro.url
+const [result] = await db.select().from(Page).where(eq(Page.pattern, pathname))
+const { description, questions } = result.data as Data
+---
+
+<SiteLayout class="absolute">
+  <Hero class="bg-[url(/images/faq-hero.webp)]" title="Preguntas Frecuentes" />
+  <p
+    class:list={[
+      'max-w-prose mt-17 mb-8 mx-5 self-center font-light text-center',
+      'text-lg/snug md:mx-10'
+    ]}
+  >
+    {description}
+  </p>
+  <section class="px-5 pb-20 md:px-10 lg:px-20 xl:px-25">
+    <h2 class="mb-13 font-semibold text-center text-2xl">
+      ¿En qué te podemos ayudar?
+    </h2>
+    <div class="max-w-5xl mx-auto space-y-5 md:columns-2 md:gap-15">
+      {
+        questions.map(([, { question, answer }]) => (
+          <details
+            class:list={[
+              'group break-inside-avoid rounded-4xl ring ring-inset',
+              'ring-neutral-100 font-light text-pretty leading-snug'
+            ]}
+            name="faq"
+          >
+            <summary
+              class:list={[
+                'py-3 px-6 rounded-4xl bg-neutral-100 font-semibold',
+                'text-blue-900 hover:bg-neutral-100/95 cursor-default',
+                'marker:text-orange-500 group-open:marker:text-blue-900'
+              ]}
+            >
+              {question}
+            </summary>
+            <div
+              class:list={[
+                'p-5 space-y-4 [&_ol]:list-decimal [&_ol]:pl-5 ',
+                '[&_ul]:list-disc [&_ul]:pl-5 [&_li]:my-1 '
+              ]}
+            >
+              <Fragment set:html={marked.parse(answer)} />
+            </div>
+          </details>
+        ))
+      }
+    </div>
+  </section>
+</SiteLayout>

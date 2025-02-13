@@ -6,7 +6,7 @@ import Textarea from '@/components/Textarea'
 ---
 
 <CMSLayout>
-  <section class="lg:grid lg:grid-cols-2 lg:gap-x-6">
+  <section class="mb-12 grid gap-6 lg:grid-cols-2">
     <InputImage label="Logo" name="logo" client:idle />
     <InputImage
       class="bg-blue-950"
@@ -14,20 +14,8 @@ import Textarea from '@/components/Textarea'
       name="logo-white"
       client:idle
     />
-    <Input
-      class="mb-6 break-inside-avoid"
-      type="text"
-      label="Facebook"
-      target="data.facebook"
-      client:load
-    />
-    <Input
-      class="mb-6 break-inside-avoid"
-      type="text"
-      label="Instagram"
-      target="data.instagram"
-      client:load
-    />
+    <Input type="text" label="Facebook" target="data.facebook" client:load />
+    <Input type="text" label="Instagram" target="data.instagram" client:load />
     <Textarea
       label="Descripción del formulario"
       target="data.formDescription"

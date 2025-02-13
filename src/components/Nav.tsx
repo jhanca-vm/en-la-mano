@@ -1,12 +1,13 @@
 import { useSignal } from '@preact/signals'
 import clsx from 'clsx/lite'
-import IconMenu from './IconMenu'
+import IconMenu from './icons/Menu'
 
 interface Props {
   pathname: string
+  isLanding: boolean
 }
 
-export default function Nav({ pathname }: Props) {
+export default function Nav({ pathname, isLanding }: Props) {
   const isOpen = useSignal(false)
   const links = [
     { href: '/', label: 'Inicio' },
@@ -50,8 +51,10 @@ export default function Nav({ pathname }: Props) {
               <a
                 class={
                   pathname === href
-                    ? 'font-semibold text-orange-500'
-                    : 'hover:opacity-90'
+                    ? 'font-medium text-orange-500'
+                    : isLanding
+                      ? 'hover:text-purple-900'
+                      : 'hover:opacity-90'
                 }
                 href={href}
               >

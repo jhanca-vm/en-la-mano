@@ -3,9 +3,9 @@ import { actions } from 'astro:actions'
 import { format } from '@formkit/tempo'
 import { navigate } from 'astro:transitions/client'
 import clsx from 'clsx/lite'
-import Input from './Input'
-import Button from './Button'
-import IconArrow from './IconArrow'
+import IconArrow from '@/components/icons/Arrow'
+import Input from '@/components/Input'
+import Button from '@/components/Button'
 
 interface Props {
   docNumber: string

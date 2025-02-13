@@ -1,11 +1,11 @@
 ---
 import { db, eq, Page } from 'astro:db'
 import { marked } from 'marked'
+import liteYoutubeEmbed from 'lite-youtube-embed/src/lite-yt-embed?url'
 import SiteLayout from '@/layouts/SiteLayout.astro'
 import LandingHero from '@/components/LandingHero.astro'
 import LandingForm from '@/components/LandingForm'
 import Steps from '@/components/Steps.astro'
-import liteYoutubeEmbed from 'lite-youtube-embed/src/lite-yt-embed?url'
 import 'lite-youtube-embed/src/lite-yt-embed.css'
 
 interface Data {
@@ -28,7 +28,7 @@ const videoid = new URL(data.video).searchParams.get('v')
 
 <SiteLayout>
   <LandingHero name="home" bannerText={bannerText}>
-    <LandingForm source="home" client:idle>
+    <LandingForm source="Landing1" client:idle>
       <Fragment set:html={marked.parse(data.offer, { breaks: true })} />
     </LandingForm>
   </LandingHero>

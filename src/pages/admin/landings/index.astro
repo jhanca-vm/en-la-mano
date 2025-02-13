@@ -1,0 +1,31 @@
+---
+import CMSLayout from '@/layouts/CMSLayout.astro'
+import Textarea from '@/components/Textarea'
+import Input from '@/components/Input'
+import List from './_List'
+---
+
+<CMSLayout>
+  <section class="lg:columns-2 lg:gap-6">
+    <Textarea
+      class="mb-6 break-inside-avoid"
+      label="Oferta"
+      target="data.offer"
+      client:load
+    />
+    <Input
+      class="mb-6 break-inside-avoid"
+      type="url"
+      label="Video"
+      target="data.video"
+      client:load
+    />
+    <Textarea
+      class="mb-6 break-inside-avoid"
+      label="Requisitos"
+      target="data.requirements"
+      client:load
+    />
+  </section>
+  <List client:load />
+</CMSLayout>

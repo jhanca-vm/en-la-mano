@@ -5,7 +5,6 @@ import { db, eq, Image } from 'astro:db'
 export default defineAction({
   input: z.object({ name: z.string(), data: z.string() }),
   async handler(input) {
-    await db.insert(Image).values(input)
-    // await db.update(Image).set(input).where(eq(Image.name, input.name))
+    await db.update(Image).set(input).where(eq(Image.name, input.name))
   }
 })

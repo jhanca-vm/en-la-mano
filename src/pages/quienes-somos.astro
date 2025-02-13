@@ -1,0 +1,73 @@
+---
+import { db, eq, Page } from 'astro:db'
+import { marked } from 'marked'
+import { Image } from 'astro:assets'
+import SiteLayout from '@/layouts/SiteLayout.astro'
+import Hero from '@/components/Hero.astro'
+
+interface Data {
+  mission: string
+  vision: string
+  values: string
+  title: string
+  description: string
+}
+
+const { pathname, origin } = Astro.url
+const [result] = await db.select().from(Page).where(eq(Page.pattern, pathname))
+const data = result.data as Data
+---
+
+<SiteLayout class="absolute">
+  <Hero class="bg-[url(/images/about-hero.webp)]" title="Quiénes somos" />
+  <section
+    class:list={[
+      'mt-17 px-5 grid gap-17 font-light text-lg/snug text-pretty [&_p]:mt-5',
+      'md:px-10 lg:px-20 lg:grid-cols-3 xl:px-25'
+    ]}
+  >
+    <article>
+      <header class="flex items-center gap-3">
+        <img src="/icons/mission.svg" alt="" width="20" height="25" />
+        <h2 class="font-semibold uppercase tracking-wide">Misión</h2>
+      </header>
+      <Fragment set:html={marked.parse(data.mission)} />
+    </article>
+    <article>
+      <header class="flex items-center gap-3">
+        <img src="/icons/vision.svg" alt="" width="24" height="18" />
+        <h2 class="font-semibold uppercase tracking-wide">Visión</h2>
+      </header>
+      <Fragment set:html={marked.parse(data.vision)} />
+    </article>
+    <article>
+      <header class="flex items-center gap-3">
+        <img src="/icons/values.svg" alt="" width="24" height="20" />
+        <h2 class="font-semibold uppercase tracking-wide">Valores</h2>
+      </header>
+      <Fragment set:html={marked.parse(data.values)} />
+    </article>
+  </section>
+  <section
+    class:list={[
+      'my-24 px-5 flex flex-col gap-16 font-light text-lg/snug text-balance',
+      '[&_strong]:font-semibold [&_strong]:text-4xl [&_p]:mt-5',
+      '[&_p:has(strong)]:mb-12 md:px-10 lg:px-20 lg:flex-row lg:items-center',
+      'xl:px-25'
+    ]}
+  >
+    <Image
+      class="m-auto rounded-3xl"
+      src={`${origin}/images/about`}
+      alt=""
+      inferSize
+    />
+    <article>
+      <header class="flex items-center gap-3">
+        <img src="/icons/mission.svg" alt="" width="20" height="25" />
+        <h2 class="font-semibold uppercase tracking-wide">{data.title}</h2>
+      </header>
+      <Fragment set:html={marked.parse(data.description)} />
+    </article>
+  </section>
+</SiteLayout>

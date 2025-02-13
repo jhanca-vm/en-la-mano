@@ -4,9 +4,9 @@ import { useSignal } from '@preact/signals'
 import { actions } from 'astro:actions'
 import { navigate } from 'astro:transitions/client'
 import clsx from 'clsx/lite'
+import IconArrow from './icons/Arrow'
 import Input from './Input'
 import Button from './Button'
-import IconArrow from './IconArrow'
 
 interface Props {
   source: string
@@ -85,7 +85,7 @@ export default function LandingForm({ source, children }: Props) {
         <label class="font-display text-xs" for={id}>
           Leí y acepto los{' '}
           <a
-            class="font-semibold underline hover:opacity-90"
+            class="font-medium underline hover:text-purple-900"
             href="/terminos-y-condiciones"
             target="_blank"
           >
@@ -93,7 +93,7 @@ export default function LandingForm({ source, children }: Props) {
           </a>{' '}
           y{' '}
           <a
-            class="font-semibold underline hover:opacity-90"
+            class="font-medium underline hover:text-purple-900"
             href="/politicas-de-privacidad"
             target="_blank"
           >
