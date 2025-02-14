@@ -31,7 +31,13 @@ const data = result.data as Data
     'via-34% to-blue-950 to-[88.5%] text-neutral-100'
   ]}
 >
-  <header class:list={[Astro.props.class, 'inset-x-0 z-10 flex']}>
+  <header
+    class:list={[
+      Astro.props.class,
+      { 'sticky top-0 md:-top-4': isLanding },
+      'inset-x-0 z-10 flex'
+    ]}
+  >
     <div
       class:list={[
         { 'rounded-full shadow-2xl bg-neutral-100 text-blue-900': isLanding },
@@ -79,6 +85,7 @@ const data = result.data as Data
       </a>
       <a href="/politicas-de-privacidad">Políticas de Privacidad</a>
       <a href="/politicas-de-seguridad">Políticas de Seguridad </a>
+      <a href="/reclamos">Reclamos</a>
     </nav>
     <section
       class:list={[

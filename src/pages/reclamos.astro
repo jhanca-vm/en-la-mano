@@ -1,0 +1,66 @@
+---
+import SiteLayout from '@/layouts/SiteLayout.astro'
+import IconArrow from '@/components/icons/Arrow'
+import Hero from '@/components/Hero.astro'
+import Input from '@/components/Input'
+import Textarea from '@/components/Textarea'
+import Button from '@/components/Button'
+---
+
+<SiteLayout class="absolute">
+  <Hero class="bg-[url(/images/support-hero.webp)]" title="Reclamos" />
+  <section
+    class:list={[
+      'max-w-prose self-center mt-12 mb-24 mx-5 font-light text-center',
+      'leading-snug'
+    ]}
+  >
+    <p>
+      En Préstamos En La Mano queremos mejorar continuamente nuestros servicios
+      y nuestra atención. Si tenés algún inconveniente con nuestros productos o
+      servicios, déjanos tus datos y comentarios en el siguiente formulario.
+    </p>
+    <form
+      class:list={[
+        'my-12 p-8 rounded-4xl bg-neutral-100 font-normal text-left',
+        'text-blue-900'
+      ]}
+    >
+      <h2>Completá el formulario</h2>
+      <div class="my-6 grid gap-4 sm:grid-cols-2 md:gap-x-7">
+        <Input placeholder="Nombre" />
+        <Input placeholder="Apellido" />
+        <Input type="number" placeholder="Cédula (sin puntos ni guiones)" />
+        <Input type="email" placeholder="Email" />
+        <Input type="number" placeholder="Celular" />
+        <Input type="number" placeholder="Teléfono" />
+        <Textarea class="sm:col-span-2" placeholder="Comentarios" fixed />
+      </div>
+      <Button class="flex items-center">Enviar reclamo <IconArrow /></Button>
+    </form>
+    <p>
+      Estimado cliente: Este formulario de reclamo se enviará al Departamento de
+      Atención al Cliente de EN LA MANO para su análisis.
+    </p>
+    <p class="my-4">
+      Usted recibirá una respuesta del mismo en un plazo máximo de quince días
+      corridos a partir del día de la fecha. Dicho plazo podrá prorrogarse por
+      única vez por otros quince días corridos, siempre que la naturaleza del
+      reclamo así lo amerite, en cuyo caso recibirá por escrito los motivos de
+      la prórroga. Cualquier vencimiento de plazo que ocurriera en día inhábil,
+      correrá el vencimiento para el día hábil siguiente.
+    </p>
+    <p>
+      La respuesta escrita no será necesaria si el reclamo es resuelto a vuestro
+      favor dentro de un plazo de 2 días hábiles a partir de la fecha. En el
+      caso que EN LA MANO entienda que el reclamo es injustificado, se le
+      informará por escrito los motivos por los cuales no se atenderá su
+      solicitud. MANDAZY S.A (Préstamos En La Mano) constituye una empresa
+      otorgante de crédito de menores activos supervisada por el Banco Central
+      del Uruguay. En consecuencia, usted podrá trasladar su reclamo a la
+      Superintendencia de Servicios Financieros del Banco Central del Uruguay,
+      ante la ausencia de respuesta por parte de EN LA MANO o en caso de
+      disconformidad con la decisión adoptada.
+    </p>
+  </section>
+</SiteLayout>
