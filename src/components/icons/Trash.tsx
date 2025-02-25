@@ -2,7 +2,7 @@ export default function IconTrash() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      class="w-5 fill-current"
+      className="w-5 fill-current"
       viewBox="0 0 24 24"
     >
       <path d="M20 6a1 1 0 0 1 .117 1.993l-.117 .007h-.081l-.919 11a3 3 0 0 1 -2.824 2.995l-.176 .005h-8c-1.598 0 -2.904 -1.249 -2.992 -2.75l-.005 -.167l-.923 -11.083h-.08a1 1 0 0 1 -.117 -1.993l.117 -.007h16z" />

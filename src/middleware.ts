@@ -1,6 +1,6 @@
 import { defineMiddleware } from 'astro:middleware'
 import paseto from 'paseto'
-import { publicKey } from './keys'
+import { publicKey } from './lib/keys'
 
 const protectedRoutes = [
   '/admin',

@@ -26,6 +26,6 @@ const { title, action, submitLabel, error } = Astro.props
     <Input name="username" placeholder="Usuario" required />
     <Input type="password" name="password" placeholder="Contraseña" required />
     {error && <p class="text-right text-sm text-red-500">{error}</p>}
-    <Button class="w-full">{submitLabel}</Button>
+    <Button className="w-full">{submitLabel}</Button>
   </form>
 </BaseLayout>

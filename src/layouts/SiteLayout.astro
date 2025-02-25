@@ -1,6 +1,8 @@
 ---
 import { db, eq, Page } from 'astro:db'
 import { Image } from 'astro:assets'
+import { ClientRouter } from 'astro:transitions'
+import LoadingIndicator from 'astro-loading-indicator/component'
 import unit from '@/assets/unit.webp'
 import whatsapp from '@/assets/whatsapp.webp'
 import IconMobile from '@/components/icons/Mobile.astro'
@@ -31,6 +33,10 @@ const data = result.data as Data
     'via-34% to-blue-950 to-[88.5%] text-neutral-100'
   ]}
 >
+  <Fragment slot="head">
+    <ClientRouter />
+    <LoadingIndicator color="var(--color-orange-500)" />
+  </Fragment>
   <header
     class:list={[
       Astro.props.class,
@@ -40,7 +46,7 @@ const data = result.data as Data
   >
     <div
       class:list={[
-        { 'rounded-full shadow-2xl bg-neutral-100 text-blue-900': isLanding },
+        { 'rounded-full shadow-xl bg-neutral-100 text-blue-900': isLanding },
         'w-full m-5 py-2.5 px-5 flex items-center justify-between md:mx-10',
         'md:my-8 md:px-10 xl:mx-15'
       ]}
@@ -120,7 +126,7 @@ const data = result.data as Data
       'xl:right-15'
     ]}
   >
-    <a href="/normas-unit" target="_blank">
+    <a href="/normas-unit">
       <Image class="w-13" src={unit} alt="Normas UNIT" />
     </a>
     <a href="https://wa.me/59891866565" target="_blank" rel="noreferrer">

@@ -19,6 +19,7 @@ const siteName = 'En La Mano'
     <title>{title ? `${title} - ${siteName}` : siteName}</title>
     <link rel="icon" href="/favicon.png" type="image/png" />
     <link rel="preload" href={outfit} as="font" type="font/woff2" crossorigin />
+    <slot name="head" />
   </head>
   <body class:list={['min-h-svh', className]}>
     <slot />

@@ -2,10 +2,10 @@ export default function IconPhotoUp() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      class="w-5 fill-none stroke-current stroke-2"
+      className="w-5 fill-none stroke-current stroke-2"
       viewBox="0 0 24 24"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     >
       <path d="M15 8h.01" />
       <path d="M12.5 21h-6.5a3 3 0 0 1 -3 -3v-12a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v6.5" />

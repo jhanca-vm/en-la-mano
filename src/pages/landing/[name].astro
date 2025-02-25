@@ -1,11 +1,11 @@
 ---
 import { db, eq, Page } from 'astro:db'
 import { marked } from 'marked'
+import liteYoutubeEmbed from 'lite-youtube-embed/src/lite-yt-embed?url'
 import SiteLayout from '@/layouts/SiteLayout.astro'
 import LandingHero from '@/components/LandingHero.astro'
 import LandingForm from '@/components/LandingForm'
 import Steps from '@/components/Steps.astro'
-import liteYoutubeEmbed from 'lite-youtube-embed/src/lite-yt-embed?url'
 import 'lite-youtube-embed/src/lite-yt-embed.css'
 
 interface Data {
@@ -50,8 +50,8 @@ const videoid = new URL(data.video).searchParams.get('v')
     </Steps>
   </section>
   <section class="mb-28 px-5 md:px-10">
-    <lite-youtube class="inset-x-0 mx-auto rounded-3xl" videoid={videoid}
-    ></lite-youtube>
+    <lite-youtube class="inset-x-0 mx-auto rounded-3xl" videoid={videoid}>
+    </lite-youtube>
   </section>
 </SiteLayout>
 

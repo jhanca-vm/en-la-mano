@@ -1,66 +1,51 @@
-import { createHmac, createSecretKey, randomBytes } from 'node:crypto'
 import { defineAction } from 'astro:actions'
 import { z } from 'astro:schema'
 import paseto from 'paseto'
-import { privateKey } from '@/keys'
+import { privateKey } from '@/lib/keys'
+import getParams from '@/lib/getParams'
+import prisma from '@/lib/prisma'
 
-interface Data {
-  docNumber: string
-  success: boolean
-  result: string | null
-}
-
-const env = import.meta.env
+const { CRM_URL, REALM } = import.meta.env
 
 export default defineAction({
-  input: z.object({ script: z.number(), data: z.record(z.any()) }),
+  input: z.object({ script: z.number(), data: z.record(z.string()) }),
   async handler({ script, data }) {
-    const params: [string, string | number][] = [
-      ['oauth_consumer_key', env.CONSUMER_KEY],
-      ['oauth_token', env.TOKEN],
-      ['oauth_signature_method', 'HMAC-SHA256'],
-      ['oauth_timestamp', Math.round(Date.now() / 1000)],
-      ['oauth_nonce', randomBytes(10).toString('hex')]
-    ]
+    const { docNumber, ...rest } = data
 
-    params.push([
-      'oauth_signature',
-      encodeURIComponent(
-        createHmac(
-          'sha256',
-          createSecretKey(`${env.CONSUMER_SECRET}&${env.TOKEN_SECRET}`, 'utf-8')
-        )
-          .update(
-            `POST&${encodeURIComponent(env.CRM_URL)}` +
-              `&${encodeURIComponent(
-                `deploy=1&${params
-                  .map((param) => param.join('='))
-                  .sort()
-                  .join('&')}&script=${script}`
-              )}`
-          )
-          .digest('base64')
-      )
-    ])
+    const params = getParams(script)
 
-    const response = await fetch(`${env.CRM_URL}?script=${script}&deploy=1`, {
+    const response = await fetch(`${CRM_URL}?script=${script}&deploy=1`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `OAuth realm="7564430",${params
+        Authorization: `OAuth realm="${REALM}",${params
           .map((param) => `${param.join('="')}"`)
           .join()}`
       },
       body: JSON.stringify(data)
     })
 
-    const { success, docNumber, result } = await response.json()
+    const { success, result } = await response.json()
 
-    const token = await paseto.V4.sign(
-      success ? { sub: docNumber } : { result },
-      privateKey,
-      { expiresIn: '1 m' }
-    )
+    const updateUser = () => {
+      return prisma.user.update({
+        where: { docNumber },
+        data: { result, updatedAt: new Date(), ...rest }
+      })
+    }
+
+    const [token] = await Promise.all([
+      paseto.V4.sign(success ? { sub: docNumber } : { result }, privateKey, {
+        expiresIn: '1 m'
+      }),
+      script === 36
+        ? prisma.user
+            .create({
+              data: { docNumber, result, updatedAt: new Date(), ...rest }
+            })
+            .catch(updateUser)
+        : updateUser()
+    ])
 
     if (script === 36) return `/${success ? 'form' : 'result'}?token=${token}`
 

@@ -1,23 +1,53 @@
 ---
-import { db, eq, Image, Page } from 'astro:db'
 import Sidebar from '@/components/Sidebar'
-import Content from '@/components/Content'
+import Button from '@/components/Button'
 import BaseLayout from './BaseLayout.astro'
 
-const { pathname } = Astro.url
-const pattern = pathname.split('admin')[1] || '*'
-const [initialState] = await db
-  .select()
-  .from(Page)
-  .where(eq(Page.pattern, pattern))
+interface Props {
+  pattern: string
+}
 ---
 
 <BaseLayout class="bg-neutral-100 text-blue-900 md:flex">
-  <Sidebar pathname={pathname} client:media="(width < 768px)" />
-  <Content
-    initialState={JSON.stringify(initialState || { pattern, data: {} })}
-    client:load
-  >
-    <slot />
-  </Content>
+  <Sidebar pathname={Astro.url.pathname} client:media="(width < 768px)" />
+  <main class="overflow-x-hidden px-4 grow md:px-8">
+    <form>
+      <Button
+        className="sticky top-4 mt-4 mb-6 ml-auto block shadow-lg"
+        disabled
+      >
+        Guardar
+      </Button>
+      <input type="hidden" name="pattern" value={Astro.props.pattern} />
+      <div class="max-w-sm mx-auto lg:max-w-3xl">
+        <slot />
+      </div>
+    </form>
+    <slot name="widgets" />
+  </main>
 </BaseLayout>
+
+<script>
+  import { actions } from 'astro:actions'
+
+  const form = document.querySelector('form')!
+  const button = form.querySelector('button')!
+  const elements = document.querySelectorAll<
+    HTMLInputElement | HTMLTextAreaElement
+  >('input[name], textarea')
+
+  for (const element of elements) {
+    element.oninput = () => (button.disabled = false)
+  }
+
+  button.onclick = () => {
+    form.className += ' opacity-75 pointer-events-none animate-pulse'
+    button.className += ' bg-orange-500/neutral-100'
+  }
+
+  form.onsubmit = (event) => {
+    event.preventDefault()
+
+    actions.setData(Object.fromEntries(new FormData(form)))
+  }
+</script>

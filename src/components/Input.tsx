@@ -1,73 +1,62 @@
-import set from 'just-safe-set'
+import { useId, type FormEvent } from 'react'
 import clsx from 'clsx/lite'
-import get from 'just-safe-get'
-import debounce from 'just-debounce-it'
-import { json, state } from '@/store'
 
 interface Props {
-  class?: string
+  className?: string
   type?: 'text' | 'password' | 'url' | 'number' | 'email' | 'date'
   label?: string
   name?: string
-  target?: string
-  placeholder?: string
   value?: string
+  defaultValue?: string
+  placeholder?: string
   required?: boolean
   readonly?: boolean
-  onInput?: (event: InputEvent) => void
+  onInput?: (event: FormEvent<HTMLInputElement>) => void
 }
 
 export default function Input({
-  class: className,
+  className,
   type,
   label,
   name,
-  target,
   placeholder,
   value,
+  defaultValue,
   required,
   readonly,
   onInput
 }: Props) {
-  function handleInput(event: InputEvent) {
-    if (target) {
-      const eventTarget = event.target as HTMLInputElement
-      const data = JSON.parse(json.value)
-
-      set(data, target, eventTarget.value)
-
-      json.value = JSON.stringify(data)
-    }
-  }
+  const id = useId()
 
   return (
-    <div class={className}>
+    <div className={className}>
       {label && (
         <label
-          class={clsx(
+          className={clsx(
             'mb-0.5 mx-5 w-fit block font-display text-blue-950',
             type === 'date' ? 'text-xs' : 'text-sm'
           )}
-          for={name || target}
+          htmlFor={id}
         >
           {label}
         </label>
       )}
       <input
-        class={clsx(
+        className={clsx(
           'w-full py-3 px-5 rounded-4xl font-display text-sm outline-1',
           '-outline-offset-1 outline-blue-950 placeholder:text-neutral-400',
           'focus:outline-2 focus:-outline-offset-2 focus:outline-orange-500'
         )}
         type={type || 'text'}
         name={name}
-        id={name || target}
-        value={value || (target ? get(state.value, target) : undefined)}
+        id={id}
+        value={value}
+        defaultValue={defaultValue}
         placeholder={placeholder}
         required={required}
-        readonly={readonly}
+        readOnly={readonly}
         disabled={readonly}
-        onInput={target ? debounce(handleInput, 500) : onInput}
+        onInput={onInput}
       />
     </div>
   )

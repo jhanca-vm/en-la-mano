@@ -2,7 +2,7 @@
 import { actions } from 'astro:actions'
 import { Admin, db } from 'astro:db'
 import paseto from 'paseto'
-import { publicKey } from '@/keys'
+import { publicKey } from '@/lib/keys'
 import AuthLayout from '@/layouts/AuthLayout.astro'
 
 const result = Astro.getActionResult(actions.signIn)

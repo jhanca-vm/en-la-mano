@@ -1,4 +1,4 @@
-import { useSignal } from '@preact/signals'
+import { useState } from 'react'
 import clsx from 'clsx/lite'
 import IconMenu from './icons/Menu'
 
@@ -6,54 +6,54 @@ interface Props {
   pathname: string
 }
 
-export default function Sidebar({ pathname }: Props) {
-  const isOpen = useSignal(false)
-  const links = [
-    { href: '/admin', label: 'En La Mano' },
-    { href: '/admin/landings', label: 'Landings' },
-    { href: '/admin/quienes-somos', label: 'Quiénes Somos' },
-    { href: '/admin/preguntas-frecuentes', label: 'Preguntas Frecuentes' },
-    { href: '/admin/terminos-y-condiciones', label: 'Términos y Condiciones' },
-    {
-      href: '/admin/politicas-de-privacidad',
-      label: 'Políticas de Privacidad'
-    },
-    { href: '/admin/politicas-de-seguridad', label: 'Políticas de Seguridad' }
-  ]
+const links = [
+  { href: '/admin', label: 'En La Mano' },
+  { href: '/admin/landings', label: 'Landings' },
+  { href: '/admin/quienes-somos', label: 'Quiénes Somos' },
+  { href: '/admin/preguntas-frecuentes', label: 'Preguntas Frecuentes' },
+  { href: '/admin/terminos-y-condiciones', label: 'Términos y Condiciones' },
+  {
+    href: '/admin/politicas-de-privacidad',
+    label: 'Políticas de Privacidad'
+  },
+  { href: '/admin/politicas-de-seguridad', label: 'Políticas de Seguridad' }
+]
 
-  function handleClick({ target, currentTarget }: MouseEvent) {
-    if (target === currentTarget) isOpen.value = false
-  }
+export default function Sidebar({ pathname }: Props) {
+  const [isOpen, setIsOpen] = useState(false)
 
   return (
     <>
       <button
-        class="absolute left-3.5 top-5 md:hidden"
-        onClick={() => (isOpen.value = true)}
+        className="absolute left-3.5 top-5 md:hidden"
+        onClick={() => setIsOpen(true)}
       >
         <IconMenu />
       </button>
       <aside
-        class={clsx(
-          !isOpen.value && 'hidden',
+        className={clsx(
+          !isOpen && 'hidden',
           'fixed inset-0 z-10 h-lvh bg-black/50 md:sticky md:block'
         )}
-        onClick={handleClick}
+        onClick={(event) => {
+          if (event.target === event.currentTarget) setIsOpen(false)
+        }}
       >
         <nav
-          class={
+          className={
             'w-64 h-full p-4 flex flex-col gap-2 bg-blue-950 text-neutral-100'
           }
         >
           {links.map(({ label, href }) => (
             <a
-              class={clsx(
+              className={clsx(
                 'px-4 py-2 rounded-md',
                 pathname === href
                   ? 'bg-purple-900'
                   : 'text-neutral-400 hover:bg-purple-900/30'
               )}
               href={href}
+              key={href}
             >
               {label}
             </a>

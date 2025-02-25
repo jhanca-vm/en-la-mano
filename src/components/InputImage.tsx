@@ -1,32 +1,27 @@
-import { useSignal } from '@preact/signals'
+import { useId, useState, type ChangeEvent } from 'react'
 import { actions } from 'astro:actions'
 import clsx from 'clsx/lite'
 import IconPhotoUp from './icons/PhotoUp'
 
 interface Props {
-  class?: string
+  className?: string
   label: string
   name: string
 }
 
-export default function InputImage({ class: className, label, name }: Props) {
-  const isLoading = useSignal(false)
-  const image = useSignal(`/images/${name}`)
+export default function InputImage({ className, label, name }: Props) {
+  const id = useId()
+  const [isLoading, setIsLoading] = useState(false)
 
-  function handleChange(event: Event) {
-    const eventTarget = event.target as HTMLInputElement
-    const file = eventTarget.files?.[0]
+  function handleChange(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0]
 
     if (file) {
       const reader = new FileReader()
 
-      reader.onload = async () => {
-        isLoading.value = true
-
-        await actions.setImage({ name, data: reader.result as string })
-
-        image.value = reader.result as string
-        isLoading.value = false
+      reader.onload = () => {
+        setIsLoading(true)
+        actions.setImage({ name, data: reader.result as string })
       }
 
       reader.readAsDataURL(file)
@@ -34,18 +29,18 @@ export default function InputImage({ class: className, label, name }: Props) {
   }
 
   return (
-    <div class="mb-6 break-inside-avoid">
-      <header class="mb-1 mx-2 flex items-center justify-between">
-        <label class="font-display text-sm" for={name}>
+    <div className="mb-6 break-inside-avoid">
+      <header className="mb-1 mx-2 flex items-center justify-between">
+        <label className="font-display text-sm" htmlFor={id}>
           {label}
         </label>
-        {!isLoading.value && (
-          <label class="text-orange-500 hover:text-orange-500/80">
+        {!isLoading && (
+          <label className="text-orange-500 hover:text-orange-500/80">
             <IconPhotoUp />
             <input
-              class="sr-only"
+              className="sr-only"
               type="file"
-              id={name}
+              id={id}
               accept="image/*"
               onChange={handleChange}
             />
@@ -53,14 +48,14 @@ export default function InputImage({ class: className, label, name }: Props) {
         )}
       </header>
       <figure
-        class={clsx(
+        className={clsx(
           'aspect-7/3 p-2 grid place-items-center rounded-lg border',
           'border-dashed border-neutral-400',
           className,
-          isLoading.value && 'bg-neutral-400/25 animate-pulse'
+          isLoading && 'bg-neutral-400/25 animate-pulse'
         )}
       >
-        {!isLoading.value && <img src={image.value} alt="" />}
+        {!isLoading && <img src={`/images/${name}`} alt="" />}
       </figure>
     </div>
   )

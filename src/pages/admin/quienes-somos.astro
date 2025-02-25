@@ -1,44 +1,41 @@
 ---
+import { db, eq, Page } from 'astro:db'
 import CMSLayout from '@/layouts/CMSLayout.astro'
 import Textarea from '@/components/Textarea'
-import Input from '@/components/Input'
-import InputImage from '@/components/InputImage'
+
+interface Data {
+  mission: string
+  vision: string
+  values: string
+  title: string
+  description: string
+}
+
+const pattern = '/quienes-somos'
+const [result] = await db.select().from(Page).where(eq(Page.pattern, pattern))
+const data = result.data as Data
+console.log(data)
 ---
 
-<CMSLayout>
-  <section class="lg:columns-2 lg:gap-6">
+<CMSLayout pattern={pattern}>
+  <div class="lg:columns-2 lg:gap-6">
     <Textarea
-      class="mb-6 break-inside-avoid"
+      className="mb-6 break-inside-avoid"
       label="Misión"
-      target="data.mission"
-      client:load
+      name="mission"
+      defaultValue={data.mission}
     />
     <Textarea
-      class="mb-6 break-inside-avoid"
+      className="mb-6 break-inside-avoid"
       label="Visión"
-      target="data.vision"
-      client:load
+      name="vision"
+      defaultValue={data.vision}
     />
     <Textarea
-      class="mb-6 break-inside-avoid"
+      className="mb-6 break-inside-avoid"
       label="Valores"
-      target="data.values"
-      client:load
+      name="values"
+      defaultValue={data.values}
     />
-  </section>
-  <section class="my-12 lg:columns-2 lg:gap-6">
-    <Input
-      class="mb-6 break-inside-avoid"
-      label="Título"
-      target="data.title"
-      client:load
-    />
-    <Textarea
-      class="mb-6 break-inside-avoid"
-      label="Descripción"
-      target="data.description"
-      client:load
-    />
-    <InputImage label="Imagen" name="about" client:idle />
-  </section>
+  </div>
 </CMSLayout>

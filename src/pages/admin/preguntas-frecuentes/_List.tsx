@@ -1,83 +1,63 @@
-import set from 'just-safe-set'
-import debounce from 'just-debounce-it'
-import { json, state } from '@/store'
+import useList from '@/lib/useList'
 import IconTrash from '@/components/icons/Trash'
 import Button from '@/components/Button'
 import Input from '@/components/Input'
 import Textarea from '@/components/Textarea'
 
-type Questions = Array<[string, { question: string; answer: string }]>
+type Question = [string, { question: string; answer: string }]
 
-export default function List() {
-  const questions: Questions = state.value.data?.questions || []
+interface Props {
+  questions: Question[]
+}
 
-  function add() {
-    const newState = JSON.parse(json.value)
+function reducer(state: any[], [id, value]: Question) {
+  return state.map((question) => (question[0] === id ? [id, value] : question))
+}
 
-    set(newState, 'data.questions', [
-      [crypto.randomUUID(), { question: '', answer: '' }],
-      ...newState.data.questions
-    ])
-
-    json.value = JSON.stringify(newState)
-  }
-
-  function handleInput(
-    event: InputEvent,
-    id: string,
-    key: 'question' | 'answer'
-  ) {
-    const target = event.target as HTMLInputElement | HTMLTextAreaElement
-    const newState = JSON.parse(json.value)
-    const map = new Map(newState.data.questions)
-    const item = map.get(id) as Record<string, string>
-
-    item[key] = target.value
-
-    map.set(id, item)
-
-    newState.data.questions = Array.from(map.entries())
-    json.value = JSON.stringify(newState)
-  }
-
-  function remove(id: string) {
-    const newState = JSON.parse(json.value)
-    const map = new Map(newState.data.questions)
-
-    map.delete(id)
-
-    newState.data.questions = Array.from(map.entries())
-    json.value = JSON.stringify(newState)
-  }
+export default function List({ questions }: Props) {
+  const { state, dispatch, add, remove } = useList(
+    'questions',
+    reducer,
+    questions
+  )
 
   return (
     <section className="my-12">
-      <Button onClick={add}>Añadir</Button>
-      {questions.map(([id, { question, answer }]) => (
+      <Button
+        type="button"
+        onClick={(event) => {
+          add(event, [crypto.randomUUID(), { question: '', answer: '' }])
+        }}
+      >
+        Añadir
+      </Button>
+      {state.map(([id, { question, answer }]) => (
         <div
-          class={'my-12 grid grid-cols-[1fr_max-content] items-start gap-6'}
+          className="my-12 grid grid-cols-[1fr_max-content] items-start gap-6"
           key={id}
         >
           <Input
             name="question"
             value={question}
             placeholder="Pregunta"
-            onInput={debounce(
-              (event: InputEvent) => handleInput(event, id, 'question'),
-              500
-            )}
+            onInput={(event) => {
+              dispatch([id, { question: event.currentTarget.value, answer }])
+            }}
           />
           <Textarea
             name="answer"
             value={answer}
             placeholder="Respuesta"
-            onInput={(event) => handleInput(event, id, 'answer')}
+            onInput={(event) => {
+              dispatch([id, { question, answer: event.currentTarget.value }])
+            }}
           />
           <button
-            class={
+            type="button"
+            className={
               'mt-2 col-start-2 row-start-1 row-span-2 hover:text-purple-900'
             }
-            onClick={() => remove(id)}
+            onClick={() => remove(([questionId]) => questionId !== id)}
           >
             <IconTrash />
           </button>

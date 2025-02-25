@@ -1,31 +1,43 @@
 ---
+import { db, eq, Page } from 'astro:db'
 import CMSLayout from '@/layouts/CMSLayout.astro'
 import Textarea from '@/components/Textarea'
 import Input from '@/components/Input'
 import List from './_List'
+
+interface Data {
+  offer: string
+  video: string
+  requirements: string
+  landings: Array<{ name: string; bannerText: string }>
+}
+
+const pattern = '/landings'
+const [result] = await db.select().from(Page).where(eq(Page.pattern, pattern))
+const data = result.data as Data
 ---
 
-<CMSLayout>
-  <section class="lg:columns-2 lg:gap-6">
+<CMSLayout pattern={pattern}>
+  <div class="lg:columns-2 lg:gap-6">
     <Textarea
-      class="mb-6 break-inside-avoid"
+      className="mb-6 break-inside-avoid"
       label="Oferta"
-      target="data.offer"
-      client:load
+      name="offer"
+      defaultValue={data.offer}
     />
     <Input
-      class="mb-6 break-inside-avoid"
+      className="mb-6 break-inside-avoid"
       type="url"
       label="Video"
-      target="data.video"
-      client:load
+      name="video"
+      defaultValue={data.video}
     />
     <Textarea
-      class="mb-6 break-inside-avoid"
+      className="mb-6 break-inside-avoid"
       label="Requisitos"
-      target="data.requirements"
-      client:load
+      name="requirements"
+      defaultValue={data.requirements}
     />
-  </section>
-  <List client:load />
+  </div>
+  <List landings={data.landings} client:load />
 </CMSLayout>

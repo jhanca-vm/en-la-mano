@@ -53,9 +53,9 @@ const { instagram, facebook } = result.data as Data
         <Input placeholder="Asunto" />
         <Input type="email" placeholder="Email" />
         <Input type="number" placeholder="Celular" />
-        <Textarea placeholder="Mensaje" fixed />
+        <Textarea placeholder="Mensaje" rows={4} />
       </div>
-      <Button class="flex items-center">Enviar <IconArrow /></Button>
+      <Button className="flex items-center">Enviar <IconArrow /></Button>
     </form>
   </section>
 </SiteLayout>

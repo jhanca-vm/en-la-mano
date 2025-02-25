@@ -1,6 +1,6 @@
 ---
 import paseto from 'paseto'
-import { publicKey } from '@/keys'
+import { publicKey } from '@/lib/keys'
 import SiteLayout from '@/layouts/SiteLayout.astro'
 
 interface Data {
@@ -27,7 +27,7 @@ try {
   >
     <h1 class="mb-10 text-4xl/tight text-orange-500 text-pretty">
       {
-        !result
+        result === null
           ? 'Tu préstamo está casi pronto'
           : result === 'Pre-Lead Repetido rechazado' ||
               result === 'Lead Repetido rechazado'

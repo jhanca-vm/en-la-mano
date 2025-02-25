@@ -1,0 +1,23 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  docNumber     String   @id
+  mobilephone   String?
+  source        String?
+  result        String?
+  firstName     String?
+  lastName      String?
+  activityType  String?
+  salary        String?
+  dateOfBirth   String?
+  workStartDate String?
+  email         String?
+  updatedAt     DateTime
+}

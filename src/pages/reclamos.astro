@@ -34,9 +34,15 @@ import Button from '@/components/Button'
         <Input type="email" placeholder="Email" />
         <Input type="number" placeholder="Celular" />
         <Input type="number" placeholder="Teléfono" />
-        <Textarea class="sm:col-span-2" placeholder="Comentarios" fixed />
+        <Textarea
+          className="sm:col-span-2"
+          placeholder="Comentarios"
+          rows={4}
+        />
       </div>
-      <Button class="flex items-center">Enviar reclamo <IconArrow /></Button>
+      <Button className="flex items-center">
+        Enviar reclamo <IconArrow />
+      </Button>
     </form>
     <p>
       Estimado cliente: Este formulario de reclamo se enviará al Departamento de
