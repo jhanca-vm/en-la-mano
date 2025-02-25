@@ -8,6 +8,7 @@ interface Props {
 
 const links = [
   { href: '/admin', label: 'En La Mano' },
+  { href: '/admin/leads', label: 'Leads Generados' },
   { href: '/admin/landings', label: 'Landings' },
   { href: '/admin/quienes-somos', label: 'Quiénes Somos' },
   { href: '/admin/preguntas-frecuentes', label: 'Preguntas Frecuentes' },

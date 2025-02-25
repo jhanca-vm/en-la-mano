@@ -4,12 +4,14 @@ import { publicKey } from './lib/keys'
 
 const protectedRoutes = [
   '/admin',
+  '/admin/leads',
   '/admin/landings',
   '/admin/quienes-somos',
   '/admin/preguntas-frecuentes',
   '/admin/terminos-y-condiciones',
   '/admin/politicas-de-privacidad',
-  '/admin/politicas-de-seguridad'
+  '/admin/politicas-de-seguridad',
+  '/leads.csv'
 ]
 
 export const onRequest = defineMiddleware(
