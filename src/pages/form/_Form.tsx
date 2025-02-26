@@ -5,6 +5,7 @@ import { format } from '@formkit/tempo'
 import clsx from 'clsx/lite'
 import IconArrow from '@/components/icons/Arrow'
 import Input from '@/components/Input'
+import Select from '@/components/Select'
 import Button from '@/components/Button'
 
 interface Props {
@@ -46,15 +47,10 @@ export default function Form({ docNumber }: Props) {
         <Input name="email" type="email" placeholder="Email" required />
       </div>
       <div className="grid">
-        <select
-          className={clsx(
-            'appearance-none mb-6 px-5 py-3 rounded-4xl font-display text-sm',
-            activityType ? 'text-blue-950' : 'text-neutral-400',
-            'outline-1 -outline-offset-1 outline-blue-950 active:text-blue-950',
-            'active:outline-2 active:-outline-offset-2',
-            'active:outline-orange-500'
-          )}
+        <Select
+          className="mb-6"
           name="activityType"
+          value={activityType}
           required
           onChange={(event) => setActivityType(event.target.value)}
         >
@@ -65,7 +61,7 @@ export default function Form({ docNumber }: Props) {
           <option>Público</option>
           <option>Jubilado</option>
           <option>Independiente</option>
-        </select>
+        </Select>
         <Input
           className="mb-2"
           type="number"

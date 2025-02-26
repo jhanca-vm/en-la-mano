@@ -10,13 +10,12 @@ const protectedRoutes = [
   '/admin/preguntas-frecuentes',
   '/admin/terminos-y-condiciones',
   '/admin/politicas-de-privacidad',
-  '/admin/politicas-de-seguridad',
-  '/leads.csv'
+  '/admin/politicas-de-seguridad'
 ]
 
 export const onRequest = defineMiddleware(
-  async ({ url, cookies, redirect }, next) => {
-    if (protectedRoutes.includes(url.pathname)) {
+  async ({ url: { pathname }, cookies, redirect }, next) => {
+    if (protectedRoutes.includes(pathname) || pathname.startsWith('/leads')) {
       const token = cookies.get('token')
 
       try {

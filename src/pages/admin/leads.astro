@@ -1,57 +1,98 @@
 ---
+import { format, parse } from '@formkit/tempo'
 import prisma from '@/lib/prisma'
 import CMSLayout from '@/layouts/CMSLayout.astro'
-import Table from '@/components/Table.astro'
+import DownloadCSV from '@/components/DownloadCSV'
 
-const page = Number(Astro.url.searchParams.get('page')) || 1
-const skip = (page - 1) * 15
-const [count, users] = await Promise.all([
-  prisma.user.count(),
-  prisma.user.findMany({ orderBy: { updatedAt: 'desc' }, take: 15, skip })
-])
+const users = await prisma.user.findMany({ orderBy: { updatedAt: 'desc' } })
 ---
 
 <CMSLayout>
   <section class="my-16">
-    <a
-      class:list={[
-        'mb-4 px-5 py-2 w-fit block  rounded-full bg-orange-500',
-        'text-neutral-100 hover:bg-orange-500/90'
-      ]}
-      href="/leads.csv"
-      download
-    >
-      Descargar
-    </a>
-    <Table users={users} />
-    <div
-      class:list={[
-        'py-5 flex flex-wrap-reverse items-center justify-between gap-4',
-        'border-t border-t-neutral-400 font-display text-sm text-purple-900'
-      ]}
-    >
-      <p>
-        Mostrando del {skip + 1} al {15 * page} de {count} resultados
-      </p>
-      <nav>
-        {
-          Array.from({ length: Math.ceil(count / 15) }, (_, i) => (
-            <a
-              href={i + 1 === page ? undefined : `?page=${i + 1}`}
-              class:list={[
-                i + 1 === page
-                  ? 'bg-purple-900 border-purple-900 text-neutral-100 ' +
-                    'cursor-default'
-                  : 'border-neutral-400 hover:bg-neutral-300/50',
-                'py-0.5 px-2 border font-medium not-first:border-l-0',
-                'first:rounded-l last:rounded-r'
-              ]}
-            >
-              {i + 1}
-            </a>
-          ))
-        }
-      </nav>
+    <DownloadCSV users={users} client:idle />
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead>
+          <tr class="text-left *:py-2 *:px-4 *:font-medium *:truncate">
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>Cédula</th>
+            <th>Celular</th>
+            <th>Nacimiento</th>
+            <th>Actividad laboral</th>
+            <th>Ingreso al trabajo actual</th>
+            <th>Salario</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            users.map((user) => (
+              <tr
+                class:list={[
+                  'border-t border-neutral-400 font-light *:py-2 *:px-4',
+                  '*:truncate'
+                ]}
+              >
+                <td>
+                  {user.result ? (
+                    <span
+                      class:list={[
+                        'px-2 rounded-md border border-purple-500 font-normal',
+                        'text-purple-500'
+                      ]}
+                    >
+                      {user.result}
+                    </span>
+                  ) : (
+                    '✅'
+                  )}
+                </td>
+                <td>
+                  <p class="font-normal">{user.source}</p>
+                  <p class="text-purple-900 ">
+                    {format(user.updatedAt, 'medium', 'es-UY')}
+                  </p>
+                </td>
+                <td>
+                  <p class="font-normal">
+                    {user.firstName || '➖'} {user.lastName}
+                  </p>
+                  <p class="text-purple-900">{user.email}</p>
+                </td>
+                <td>{user.docNumber}</td>
+                <td>{user.mobilephone}</td>
+                <td>
+                  {user.dateOfBirth
+                    ? parse(user.dateOfBirth, 'DD-MM-YYYY').toLocaleDateString(
+                        'es-UY',
+                        { dateStyle: 'medium' }
+                      )
+                    : '➖'}
+                </td>
+                <td>{user.activityType || '➖'}</td>
+                <td>
+                  {user.workStartDate
+                    ? parse(
+                        user.workStartDate,
+                        'DD-MM-YYYY'
+                      ).toLocaleDateString('es-UY', { dateStyle: 'medium' })
+                    : '➖'}
+                </td>
+                <td>
+                  {user.salary
+                    ? new Intl.NumberFormat('es-UY', {
+                        style: 'currency',
+                        currency: 'UYU',
+                        maximumFractionDigits: 0
+                      }).format(Number(user.salary))
+                    : '➖'}
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
     </div>
   </section>
 </CMSLayout>

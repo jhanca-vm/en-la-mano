@@ -1,0 +1,61 @@
+import type { User } from '@prisma/client'
+import { useState } from 'react'
+import clsx from 'clsx/lite'
+import Select from './Select'
+
+interface Props {
+  users: User[]
+}
+
+export default function DownloadCSV({ users }: Props) {
+  const [year, setYear] = useState('')
+  const [month, setMonth] = useState('')
+
+  let pathname = '/leads'
+
+  if (year) pathname += `?year=${year}`
+  if (month) pathname += `&month=${month}`
+
+  return (
+    <div className="mb-4 flex items-center gap-2">
+      <Select
+        value={year}
+        onChange={({ target: { value } }) => {
+          setYear(value)
+          if (!value) setMonth('')
+        }}
+      >
+        <option value="">Año</option>
+        {Array.from(
+          new Set(users.map((user) => user.updatedAt.getFullYear()))
+        ).map((year) => (
+          <option key={year}>{year}</option>
+        ))}
+      </Select>
+      <Select
+        value={month}
+        disabled={!year}
+        onChange={(event) => setMonth(event.target.value)}
+      >
+        <option value="" selected={!year}>
+          Mes
+        </option>
+        {Array.from(
+          new Set(users.map((user) => user.updatedAt.getMonth() + 1))
+        ).map((month) => (
+          <option key={month}>{month}</option>
+        ))}
+      </Select>
+      <a
+        className={clsx(
+          'px-5 py-2 rounded-full bg-orange-500 text-neutral-100',
+          'hover:bg-orange-500/90'
+        )}
+        href={pathname}
+        download
+      >
+        Descargar
+      </a>
+    </div>
+  )
+}
