@@ -1,6 +1,6 @@
 {
   "name": "en-la-mano",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "scripts": {
     "dev": "astro dev --remote",
     "push": "astro db push",

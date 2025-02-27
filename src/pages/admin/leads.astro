@@ -65,7 +65,7 @@ const users = await prisma.user.findMany({ orderBy: { updatedAt: 'desc' } })
                 <td>{user.mobilephone}</td>
                 <td>
                   {user.dateOfBirth
-                    ? parse(user.dateOfBirth, 'DD-MM-YYYY').toLocaleDateString(
+                    ? parse(user.dateOfBirth, 'DD/MM/YYYY').toLocaleDateString(
                         'es-UY',
                         { dateStyle: 'medium' }
                       )
@@ -76,7 +76,7 @@ const users = await prisma.user.findMany({ orderBy: { updatedAt: 'desc' } })
                   {user.workStartDate
                     ? parse(
                         user.workStartDate,
-                        'DD-MM-YYYY'
+                        'DD/MM/YYYY'
                       ).toLocaleDateString('es-UY', { dateStyle: 'medium' })
                     : '➖'}
                 </td>

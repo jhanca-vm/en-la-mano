@@ -24,8 +24,8 @@ export default function Form({ docNumber }: Props) {
       data: {
         ...data,
         docNumber,
-        dateOfBirth: format(dateOfBirth, 'medium'),
-        workStartDate: format(workStartDate, 'medium')
+        dateOfBirth: format(dateOfBirth, 'DD/MM/YYYY'),
+        workStartDate: format(workStartDate, 'DD/MM/YYYY')
       }
     })
 
