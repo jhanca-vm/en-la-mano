@@ -1,6 +1,6 @@
 {
   "name": "en-la-mano",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "scripts": {
     "dev": "astro dev --remote",
     "push": "astro db push",
@@ -8,9 +8,9 @@
     "preview": "node dist/server/entry.mjs"
   },
   "dependencies": {
-    "@astrojs/db": "^0.14.6",
-    "@astrojs/node": "^9.1.1",
-    "@astrojs/react": "^4.2.0",
+    "@astrojs/db": "^0.14.7",
+    "@astrojs/node": "^9.1.2",
+    "@astrojs/react": "^4.2.1",
     "@fontsource-variable/manrope": "^5.1.1",
     "@fontsource-variable/outfit": "^5.1.1",
     "@formkit/tempo": "^0.1.2",
@@ -20,7 +20,7 @@
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "argon2": "^0.41.1",
-    "astro": "^5.3.1",
+    "astro": "^5.4.0",
     "astro-loading-indicator": "^0.7.0",
     "clsx": "^2.1.1",
     "lite-youtube-embed": "^0.3.3",

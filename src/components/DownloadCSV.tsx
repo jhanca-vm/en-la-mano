@@ -4,16 +4,17 @@ import clsx from 'clsx/lite'
 import Select from './Select'
 
 interface Props {
+  token: string
   users: User[]
 }
 
-export default function DownloadCSV({ users }: Props) {
+export default function DownloadCSV({ token, users }: Props) {
   const [year, setYear] = useState('')
   const [month, setMonth] = useState('')
 
-  let pathname = '/leads'
+  let pathname = `/leads?token=${token}`
 
-  if (year) pathname += `?year=${year}`
+  if (year) pathname += `&year=${year}`
   if (month) pathname += `&month=${month}`
 
   return (
@@ -37,9 +38,7 @@ export default function DownloadCSV({ users }: Props) {
         disabled={!year}
         onChange={(event) => setMonth(event.target.value)}
       >
-        <option value="" selected={!year}>
-          Mes
-        </option>
+        <option value="">Mes</option>
         {Array.from(
           new Set(users.map((user) => user.updatedAt.getMonth() + 1))
         ).map((month) => (

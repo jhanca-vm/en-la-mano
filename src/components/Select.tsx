@@ -32,6 +32,7 @@ export default function Select({
         'disabled:outline-neutral-400 disabled:text-neutral-400'
       )}
       name={name}
+      value={value}
       required={required}
       disabled={disabled}
       onChange={onChange}

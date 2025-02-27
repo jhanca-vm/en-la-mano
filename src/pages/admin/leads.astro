@@ -4,12 +4,13 @@ import prisma from '@/lib/prisma'
 import CMSLayout from '@/layouts/CMSLayout.astro'
 import DownloadCSV from '@/components/DownloadCSV'
 
+const token = Astro.cookies.get('token')!.value
 const users = await prisma.user.findMany({ orderBy: { updatedAt: 'desc' } })
 ---
 
 <CMSLayout>
   <section class="my-16">
-    <DownloadCSV users={users} client:idle />
+    <DownloadCSV token={token} users={users} client:idle />
     <div class="overflow-x-auto">
       <table class="w-full">
         <thead>

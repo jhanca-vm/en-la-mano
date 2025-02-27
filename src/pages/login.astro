@@ -11,7 +11,7 @@ if (result && !result.error) return Astro.redirect('/admin')
 
 const [admin] = await db.select().from(Admin)
 
-if (admin === undefined) return Astro.rewrite('/admin/signup')
+if (admin === undefined) return Astro.rewrite('/signup')
 
 const token = Astro.cookies.get('token')
 
