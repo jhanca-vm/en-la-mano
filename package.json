@@ -1,6 +1,6 @@
 {
   "name": "en-la-mano",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "scripts": {
     "dev": "astro dev --remote",
     "push": "astro db push",
@@ -29,6 +29,7 @@
     "prisma": "^6.4.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "sonner": "^2.0.1",
     "tailwindcss": "^4.0.9"
   },
   "pnpm": {
