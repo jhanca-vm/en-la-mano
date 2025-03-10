@@ -9,10 +9,11 @@ import Select from '@/components/Select'
 import Button from '@/components/Button'
 
 interface Props {
+  id: string
   docNumber: string
 }
 
-export default function Form({ docNumber }: Props) {
+export default function Form({ id, docNumber }: Props) {
   const [activityType, setActivityType] = useState('')
   const [dateOfBirth, setDateOfBirth] = useState('')
   const [workStartDate, setWorkStartDate] = useState('')
@@ -23,6 +24,7 @@ export default function Form({ docNumber }: Props) {
       script: 37,
       data: {
         ...data,
+        id,
         docNumber,
         dateOfBirth: format(dateOfBirth, 'DD/MM/YYYY'),
         workStartDate: format(workStartDate, 'DD/MM/YYYY')

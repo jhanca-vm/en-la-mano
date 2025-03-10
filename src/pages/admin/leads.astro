@@ -5,12 +5,15 @@ import CMSLayout from '@/layouts/CMSLayout.astro'
 import DownloadCSV from '@/components/DownloadCSV'
 
 const token = Astro.cookies.get('token')!.value
-const users = await prisma.user.findMany({ orderBy: { updatedAt: 'desc' } })
+const users = await prisma.user.findMany({
+  orderBy: { updatedAt: 'desc' },
+  take: 50
+})
 ---
 
 <CMSLayout>
   <section class="my-16">
-    <DownloadCSV token={token} users={users} client:idle />
+    <DownloadCSV token={token} users={users} client:load />
     <div class="overflow-x-auto">
       <table class="w-full">
         <thead>
@@ -57,37 +60,34 @@ const users = await prisma.user.findMany({ orderBy: { updatedAt: 'desc' } })
                 </td>
                 <td>
                   <p class="font-normal">
-                    {user.firstName || '➖'} {user.lastName}
+                    {user.firstName} {user.lastName}
                   </p>
                   <p class="text-purple-900">{user.email}</p>
                 </td>
                 <td>{user.docNumber}</td>
                 <td>{user.mobilephone}</td>
                 <td>
-                  {user.dateOfBirth
-                    ? parse(user.dateOfBirth, 'DD/MM/YYYY').toLocaleDateString(
-                        'es-UY',
-                        { dateStyle: 'medium' }
-                      )
-                    : '➖'}
+                  {user.dateOfBirth &&
+                    parse(user.dateOfBirth, 'DD/MM/YYYY').toLocaleDateString(
+                      'es-UY',
+                      { dateStyle: 'medium' }
+                    )}
                 </td>
-                <td>{user.activityType || '➖'}</td>
+                <td>{user.activityType}</td>
                 <td>
-                  {user.workStartDate
-                    ? parse(
-                        user.workStartDate,
-                        'DD/MM/YYYY'
-                      ).toLocaleDateString('es-UY', { dateStyle: 'medium' })
-                    : '➖'}
+                  {user.workStartDate &&
+                    parse(user.workStartDate, 'DD/MM/YYYY').toLocaleDateString(
+                      'es-UY',
+                      { dateStyle: 'medium' }
+                    )}
                 </td>
                 <td>
-                  {user.salary
-                    ? new Intl.NumberFormat('es-UY', {
-                        style: 'currency',
-                        currency: 'UYU',
-                        maximumFractionDigits: 0
-                      }).format(Number(user.salary))
-                    : '➖'}
+                  {user.salary &&
+                    new Intl.NumberFormat('es-UY', {
+                      style: 'currency',
+                      currency: 'UYU',
+                      maximumFractionDigits: 0
+                    }).format(Number(user.salary))}
                 </td>
               </tr>
             ))

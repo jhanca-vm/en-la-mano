@@ -28,7 +28,7 @@ const videoid = new URL(data.video).searchParams.get('v')
 
 <SiteLayout>
   <LandingHero name="home" bannerText={bannerText}>
-    <LandingForm source="Landing1" client:idle>
+    <LandingForm source="home" client:idle>
       <Fragment set:html={marked.parse(data.offer, { breaks: true })} />
     </LandingForm>
   </LandingHero>

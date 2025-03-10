@@ -1,4 +1,4 @@
-import { useId, useMemo, useState, type ReactNode } from 'react'
+import { useId, useState, type ReactNode } from 'react'
 import { Toaster, toast } from 'sonner'
 import { actions } from 'astro:actions'
 import { navigate } from 'astro:transitions/client'
@@ -55,17 +55,19 @@ export default function LandingForm({ source, children }: Props) {
           type="number"
           placeholder="Cédula (sin puntos ni guiones)"
           value={docNumber}
-          required
-          onInput={(event) => setDocNumber(event.currentTarget.value)}
+          onInput={({ currentTarget: { value } }) => {
+            if (value.length <= 8) setDocNumber(value)
+          }}
         />
         <Input
           className="mt-2.5"
           type="number"
           placeholder="Celular"
           value={mobilephone}
-          required
-          onInput={(event) => setMobilephone(event.currentTarget.value)}
-        />
+          onInput={({ currentTarget: { value } }) => {
+            if (value.length <= 9) setMobilephone(value)
+          }}
+        />{' '}
         <div
           className={
             'mt-5 mb-8 grid grid-cols-[max-content_1fr] items-start gap-2'

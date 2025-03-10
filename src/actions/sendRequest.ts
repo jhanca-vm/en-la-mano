@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto'
 import { defineAction } from 'astro:actions'
 import { z } from 'astro:schema'
 import paseto from 'paseto'
@@ -10,7 +11,7 @@ const { CRM_URL, REALM } = import.meta.env
 export default defineAction({
   input: z.object({ script: z.number(), data: z.record(z.string()) }),
   async handler({ script, data }) {
-    const { docNumber, ...rest } = data
+    let { id, docNumber, ...rest } = data
 
     const params = getParams(script)
 
@@ -27,25 +28,34 @@ export default defineAction({
 
     const { success, result } = await response.json()
 
-    const updateUser = () => {
-      return prisma.user.update({
-        where: { docNumber },
-        data: { result, updatedAt: new Date(), ...rest }
-      })
-    }
+    let token
 
-    const [token] = await Promise.all([
-      paseto.V4.sign(success ? { sub: docNumber } : { result }, privateKey, {
-        expiresIn: '1 m'
-      }),
-      script === 36
-        ? prisma.user
-            .create({
-              data: { docNumber, result, updatedAt: new Date(), ...rest }
-            })
-            .catch(updateUser)
-        : updateUser()
-    ])
+    if (id) {
+      const [response] = await Promise.allSettled([
+        paseto.V4.sign(success ? { docNumber } : { result }, privateKey, {
+          expiresIn: '1 m'
+        }),
+        prisma.user.update({
+          where: { id },
+          data: { result, updatedAt: new Date(), ...rest }
+        })
+      ])
+
+      if (response.status === 'fulfilled') token = response.value
+    } else {
+      id = randomUUID()
+
+      const [response] = await Promise.allSettled([
+        paseto.V4.sign(success ? { id, docNumber } : { result }, privateKey, {
+          expiresIn: '1 m'
+        }),
+        prisma.user.create({
+          data: { id, docNumber, result, updatedAt: new Date(), ...rest }
+        })
+      ])
+
+      if (response.status === 'fulfilled') token = response.value
+    }
 
     if (script === 36) return `/${success ? 'form' : 'result'}?token=${token}`
 

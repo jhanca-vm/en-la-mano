@@ -8,7 +8,8 @@ generator client {
 }
 
 model User {
-  docNumber     String   @id
+  id            String   @id
+  docNumber     String
   mobilephone   String?
   source        String?
   result        String?
