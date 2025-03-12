@@ -14,7 +14,6 @@ interface Data {
 const pattern = '/quienes-somos'
 const [result] = await db.select().from(Page).where(eq(Page.pattern, pattern))
 const data = result.data as Data
-console.log(data)
 ---
 
 <CMSLayout pattern={pattern}>

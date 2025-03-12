@@ -22,3 +22,14 @@ model User {
   email         String?
   updatedAt     DateTime
 }
+
+model Complaint {
+  id          Int     @id @default(autoincrement())
+  firstName   String?
+  lastName    String?
+  docNumber   String
+  email       String
+  mobilephone String
+  phone       String?
+  comments    String  @db.LongText
+}

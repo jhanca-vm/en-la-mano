@@ -9,6 +9,7 @@ interface Props {
   value?: string
   defaultValue?: string
   placeholder?: string
+  error?: string
   required?: boolean
   readonly?: boolean
   onInput?: (event: FormEvent<HTMLInputElement>) => void
@@ -19,9 +20,10 @@ export default function Input({
   type,
   label,
   name,
-  placeholder,
   value,
   defaultValue,
+  placeholder,
+  error,
   required,
   readonly,
   onInput
@@ -29,7 +31,7 @@ export default function Input({
   const id = useId()
 
   return (
-    <div className={className}>
+    <div className={clsx('relative', className)}>
       {label && (
         <label
           className={clsx(
@@ -44,7 +46,8 @@ export default function Input({
       <input
         className={clsx(
           'w-full py-3 px-5 rounded-4xl font-display text-sm outline-1',
-          '-outline-offset-1 outline-blue-950 placeholder:text-neutral-400',
+          error ? 'outline-red-600' : 'outline-blue-950',
+          '-outline-offset-1 placeholder:text-neutral-400',
           'focus:outline-2 focus:-outline-offset-2 focus:outline-orange-500'
         )}
         type={type || 'text'}
@@ -58,6 +61,12 @@ export default function Input({
         disabled={readonly}
         onInput={onInput}
       />
+      {required && <span className="absolute text-sm text-blue-950">*</span>}
+      {error && (
+        <p className="mt-0.5 mx-5 font-light text-right text-sm text-red-600">
+          {error}
+        </p>
+      )}
     </div>
   )
 }

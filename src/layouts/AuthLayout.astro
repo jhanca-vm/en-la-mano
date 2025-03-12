@@ -23,8 +23,8 @@ const { title, action, submitLabel, error } = Astro.props
   <Image class="w-12" src="/favicon.png" alt="" width="48" height="48" />
   <h1 class="mt-5 mb-10 font-semibold text-4xl">{title}</h1>
   <form class="max-w-sm w-full mb-10 space-y-4" method="POST" action={action}>
-    <Input name="username" placeholder="Usuario" required />
-    <Input type="password" name="password" placeholder="Contraseña" required />
+    <Input name="username" placeholder="Usuario" />
+    <Input type="password" name="password" placeholder="Contraseña" />
     {error && <p class="text-right text-sm text-red-500">{error}</p>}
     <Button className="w-full">{submitLabel}</Button>
   </form>

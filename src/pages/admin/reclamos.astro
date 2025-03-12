@@ -1,0 +1,52 @@
+---
+import prisma from '@/lib/prisma'
+import CMSLayout from '@/layouts/CMSLayout.astro'
+
+const complaints = await prisma.complaint.findMany({
+  orderBy: { id: 'desc' },
+  take: 50
+})
+---
+
+<CMSLayout>
+  <section class="my-16">
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead>
+          <tr class="text-left *:py-2 *:px-4 *:font-medium *:truncate">
+            <th>ID</th>
+            <th>Solicitante</th>
+            <th>Cédula</th>
+            <th>Celular</th>
+            <th>Teléfono</th>
+            <th>Comentarios</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            complaints.map((complaint) => (
+              <tr
+                class:list={[
+                  'border-t border-neutral-400 font-light *:py-2 *:px-4',
+                  '*:not-last:truncate'
+                ]}
+              >
+                <td class="font-normal">{complaint.id}</td>
+                <td>
+                  <p>
+                    {complaint.firstName} {complaint.lastName}
+                  </p>
+                  <p class="text-purple-900">{complaint.email}</p>
+                </td>
+                <td>{complaint.docNumber}</td>
+                <td>{complaint.mobilephone}</td>
+                <td>{complaint.phone}</td>
+                <td class="min-w-xs">{complaint.comments}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+</CMSLayout>

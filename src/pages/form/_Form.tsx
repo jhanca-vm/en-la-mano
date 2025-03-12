@@ -37,8 +37,8 @@ export default function Form({ id, docNumber }: Props) {
   return (
     <form
       className={clsx(
-        'mb-28 p-7 grid gap-7 rounded-3xl bg-neutral-100 text-blue-950',
-        'md:grid-cols-2'
+        'max-w-136 w-full mb-28 p-7 self-center grid gap-7 rounded-3xl',
+        'bg-neutral-100 text-blue-950 md:grid-cols-2'
       )}
       action={handleRequest}
     >
@@ -46,9 +46,9 @@ export default function Form({ id, docNumber }: Props) {
         <Input name="firstName" placeholder="Nombre" required />
         <Input name="lastName" placeholder="Apellido" required />
         <Input defaultValue={docNumber} readonly />
-        <Input name="email" type="email" placeholder="Email" required />
+        <Input name="email" type="email" placeholder="Email" />
       </div>
-      <div className="grid">
+      <div className="h-fit grid">
         <Select
           className="mb-6"
           name="activityType"
@@ -82,14 +82,16 @@ export default function Form({ id, docNumber }: Props) {
           required
           onInput={(event) => setDateOfBirth(event.currentTarget.value)}
         />
-        <Input
-          className={workStartDate ? 'text-blue-950' : 'text-neutral-400'}
-          type="date"
-          label="Fecha de ingreso al trabajo actual"
-          value={workStartDate}
-          required
-          onInput={(event) => setWorkStartDate(event.currentTarget.value)}
-        />
+        {activityType !== 'Jubilado' && activityType !== 'Independiente' && (
+          <Input
+            className={workStartDate ? 'text-blue-950' : 'text-neutral-400'}
+            type="date"
+            label="Fecha de ingreso al trabajo actual"
+            value={workStartDate}
+            required
+            onInput={(event) => setWorkStartDate(event.currentTarget.value)}
+          />
+        )}
       </div>
       <Button className="mt-2 w-fit flex items-center">
         Solicitar efectivo <IconArrow />

@@ -1,10 +1,7 @@
 ---
 import SiteLayout from '@/layouts/SiteLayout.astro'
-import IconArrow from '@/components/icons/Arrow'
 import Hero from '@/components/Hero.astro'
-import Input from '@/components/Input'
-import Textarea from '@/components/Textarea'
-import Button from '@/components/Button'
+import Form from './_Form'
 ---
 
 <SiteLayout class="absolute">
@@ -20,30 +17,7 @@ import Button from '@/components/Button'
       y nuestra atención. Si tenés algún inconveniente con nuestros productos o
       servicios, déjanos tus datos y comentarios en el siguiente formulario.
     </p>
-    <form
-      class:list={[
-        'my-12 p-8 rounded-4xl bg-neutral-100 font-normal text-left',
-        'text-blue-900'
-      ]}
-    >
-      <h2>Completá el formulario</h2>
-      <div class="my-6 grid gap-4 sm:grid-cols-2 md:gap-x-7">
-        <Input placeholder="Nombre" />
-        <Input placeholder="Apellido" />
-        <Input type="number" placeholder="Cédula (sin puntos ni guiones)" />
-        <Input type="email" placeholder="Email" />
-        <Input type="number" placeholder="Celular" />
-        <Input type="number" placeholder="Teléfono" />
-        <Textarea
-          className="sm:col-span-2"
-          placeholder="Comentarios"
-          rows={4}
-        />
-      </div>
-      <Button className="flex items-center">
-        Enviar reclamo <IconArrow />
-      </Button>
-    </form>
+    <Form client:idle />
     <p>
       Estimado cliente: Este formulario de reclamo se enviará al Departamento de
       Atención al Cliente de EN LA MANO para su análisis.

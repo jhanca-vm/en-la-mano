@@ -4,18 +4,17 @@ import { publicKey } from '@/lib/keys'
 import SiteLayout from '@/layouts/SiteLayout.astro'
 
 interface Data {
-  formDescription: string
+  id?: number
+  result?: string
 }
 
-let result: string | null
+let data: Data = {}
 
 try {
-  const payload = await paseto.V4.verify(
+  data = await paseto.V4.verify(
     Astro.url.searchParams.get('token') || '',
     publicKey
   )
-
-  result = payload.result as string | null
 } catch {
   return Astro.redirect('/')
 }
@@ -23,34 +22,59 @@ try {
 
 <SiteLayout>
   <section
-    class="max-w-3xl m-auto px-10 pt-12 pb-24 text-center md:px-20 md:pb-32"
+    class="max-w-204 m-auto px-10 pt-12 pb-24 text-center md:px-20 md:pb-32"
   >
-    <h1 class="mb-10 text-4xl/tight text-orange-500 text-pretty">
+    <h1 class="mb-8 text-4xl/tight text-orange-500 text-balance">
       {
-        result === null
-          ? 'Tu préstamo está casi pronto'
-          : result === 'Pre-Lead Repetido rechazado' ||
-              result === 'Lead Repetido rechazado'
-            ? 'Ya estamos trabajando en tu solicitud'
-            : 'En este momento no podemos ofrecerte un préstamo'
+        data.id
+          ? `Reclamo #${data.id} enviado`
+          : !data.result
+            ? 'Tu préstamo está casi pronto'
+            : data.result === 'Pre-Lead Repetido rechazado' ||
+                data.result === 'Lead Repetido rechazado'
+              ? 'Ya estamos trabajando en tu solicitud'
+              : 'En este momento no podemos ofrecerte un préstamo'
       }
     </h1>
-    <p class="font-light text-lg">
+    <div class="space-y-4 font-light text-lg text-pretty">
       {
-        !result
-          ? 'Estamos analizando los detalles y podemos ofrecerte un ' +
-            'préstamo. En breve te contactaremos para que sigas avanzando. ' +
-            '¡Quedate atento!'
-          : result === 'Pre-Lead Repetido rechazado' ||
-              result === 'Lead Repetido rechazado'
-            ? 'Tenemos tus datos y estamos analizando tu perfil. Pronto te ' +
-              'daremos una respuesta para ofrecerte el SÍ que necesitás. ' +
-              '¡Gracias por tu paciencia!'
-            : 'Por ahora no contamos con una opción que se ajuste a tus ' +
-              'necesidades, pero no te preocupes: nuestros asesores seguirán ' +
-              'evaluando tu perfil para ofrecerte pronto el Sí que estás ' +
-              'buscando.'
+        data.id ? (
+          <>
+            <p>
+              Usted recibirá una respuesta del mismo en un plazo máximo de
+              quince días corridos a partir del día de la fecha. Dicho plazo
+              podrá prorrogarse por única vez por otros quince días corridos,
+              siempre que la naturaleza del reclamo así lo amerite, en cuyo caso
+              recibirá por escrito los motivos de la prórroga.
+            </p>
+            <p>
+              Cualquier vencimiento de plazo que ocurriera en día inhábil,
+              correrá el vencimiento para el día hábil siguiente.
+            </p>
+            <p>
+              La respuesta escrita no será necesaria si el reclamo es resuelto a
+              vuestro favor dentro de un plazo de 2 días hábiles a partir de la
+              fecha.
+            </p>
+          </>
+        ) : (
+          <p>
+            {!data.result
+              ? 'Estamos analizando los detalles y podemos ofrecerte un ' +
+                'préstamo. En breve te contactaremos para que sigas ' +
+                'avanzando. ¡Quedate atento!'
+              : data.result === 'Pre-Lead Repetido rechazado' ||
+                  data.result === 'Lead Repetido rechazado'
+                ? 'Tenemos tus datos y estamos analizando tu perfil. Pronto ' +
+                  'te daremos una respuesta para ofrecerte el Sí que ' +
+                  'necesitás. ¡Gracias por tu paciencia!'
+                : 'Por ahora no contamos con una opción que se ajuste a tus ' +
+                  'necesidades, pero no te preocupes: nuestros asesores ' +
+                  'seguirán evaluando tu perfil para ofrecerte pronto el Sí ' +
+                  'que estás buscando.'}
+          </p>
+        )
       }
-    </p>
+    </div>
   </section>
 </SiteLayout>

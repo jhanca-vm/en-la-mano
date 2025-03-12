@@ -1,0 +1,17 @@
+---
+interface Props {
+  class?: string
+}
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  class:list={[
+    Astro.props.class,
+    'w-4.5 fill-none stroke-current stroke-[1.5]'
+  ]}
+  viewBox="0 0 24 24"
+>
+  <circle cx="12" cy="12" r="10"></circle>
+  <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l2 2"></path>
+</svg>

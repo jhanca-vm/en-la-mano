@@ -1,0 +1,17 @@
+---
+import { db, eq, Page } from 'astro:db'
+import CMSLayout from '@/layouts/CMSLayout.astro'
+import Textarea from '@/components/Textarea'
+
+interface Data {
+  content: string
+}
+
+const pattern = '/bases-y-condiciones-de-sorteos'
+const [result] = await db.select().from(Page).where(eq(Page.pattern, pattern))
+const data = result.data as Data
+---
+
+<CMSLayout pattern={pattern}>
+  <Textarea className="mb-24" name="content" defaultValue={data.content} />
+</CMSLayout>

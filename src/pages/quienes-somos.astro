@@ -1,7 +1,6 @@
 ---
 import { db, eq, Page } from 'astro:db'
 import { marked } from 'marked'
-import { Image } from 'astro:assets'
 import SiteLayout from '@/layouts/SiteLayout.astro'
 import Hero from '@/components/Hero.astro'
 
@@ -20,7 +19,7 @@ const data = result.data as Data
   <Hero class="bg-[url(/images/about-hero.webp)]" title="Quiénes somos" />
   <section
     class:list={[
-      'my-24 px-5 grid gap-17 font-light text-lg/snug text-pretty [&_p]:mt-5',
+      'my-24 px-5 grid gap-17 font-light text-lg/snug text-pretty [&_p]:mt-4',
       'md:px-10 lg:px-20 lg:grid-cols-3 xl:px-25'
     ]}
   >

@@ -9,6 +9,7 @@ interface Props {
 const links = [
   { href: '/admin', label: 'En La Mano' },
   { href: '/admin/leads', label: 'Leads Generados' },
+  { href: '/admin/reclamos', label: 'Reclamos' },
   { href: '/admin/landings', label: 'Landings' },
   { href: '/admin/quienes-somos', label: 'Quiénes Somos' },
   { href: '/admin/preguntas-frecuentes', label: 'Preguntas Frecuentes' },
@@ -17,7 +18,11 @@ const links = [
     href: '/admin/politicas-de-privacidad',
     label: 'Políticas de Privacidad'
   },
-  { href: '/admin/politicas-de-seguridad', label: 'Políticas de Seguridad' }
+  { href: '/admin/politicas-de-seguridad', label: 'Políticas de Seguridad' },
+  {
+    href: '/admin/bases-y-condiciones-de-sorteos',
+    label: 'Bases y Condiciones de Sorteos'
+  }
 ]
 
 export default function Sidebar({ pathname }: Props) {

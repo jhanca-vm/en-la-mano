@@ -27,7 +27,7 @@ export default function Textarea({
   const id = useId()
 
   return (
-    <div className={className}>
+    <div className={clsx('relative', className)}>
       {label && (
         <label
           className="mb-0.5 mx-5 w-fit block font-display text-sm"
@@ -53,6 +53,7 @@ export default function Textarea({
         required={required}
         onInput={onInput}
       ></textarea>
+      {required && <span className="absolute text-sm text-blue-950">*</span>}
     </div>
   )
 }

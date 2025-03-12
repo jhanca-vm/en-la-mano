@@ -17,13 +17,6 @@ const { content } = result.data as Data
     <h1 class="mb-12 font-semibold text-center text-4xl">
       Políticas de Privacidad
     </h1>
-    <div
-      class:list={[
-        'space-y-4 font-light [&_h2]:font-semibold [&_h2]:text-lg [&_h2]:mt-12',
-        '[&_ul]:list-disc [&_ul]:pl-5 [&_li]:my-2 [&_strong]:font-medium',
-        '[&_a]:font-normal [&_a]:text-purple-500 [&_a]:hover:underline'
-      ]}
-      set:html={marked.parse(content)}
-    />
+    <div class="prose" set:html={marked.parse(content)} />
   </section>
 </SiteLayout>
