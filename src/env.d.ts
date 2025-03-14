@@ -5,6 +5,7 @@ interface ImportMetaEnv {
   readonly ACCESS_TOKEN: string
   readonly TOKEN_SECRET: string
   readonly REALM: string
+  readonly RESEND_API_KEY: string
 }
 
 interface ImportMeta {
