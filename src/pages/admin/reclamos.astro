@@ -2,6 +2,7 @@
 import prisma from '@/lib/prisma'
 import CMSLayout from '@/layouts/CMSLayout.astro'
 
+const token = Astro.cookies.get('token')!.value
 const complaints = await prisma.complaint.findMany({
   orderBy: { id: 'desc' },
   take: 50
@@ -9,7 +10,17 @@ const complaints = await prisma.complaint.findMany({
 ---
 
 <CMSLayout>
-  <section class="my-16">
+  <section class="mt-4 mb-16">
+    <a
+      class:list={[
+        'w-fit mb-5 ml-auto block px-5 py-2 rounded-full bg-orange-500',
+        'text-neutral-100 hover:bg-orange-500/90'
+      ]}
+      href={`/complaints?token=${token}`}
+      download
+    >
+      Descargar
+    </a>
     <div class="overflow-x-auto">
       <table class="w-full">
         <thead>

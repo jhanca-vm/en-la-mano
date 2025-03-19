@@ -31,7 +31,7 @@ export default function Sidebar({ pathname }: Props) {
   return (
     <>
       <button
-        className="absolute left-3.5 top-5 md:hidden"
+        className="absolute left-3.5 top-5.5 md:hidden"
         onClick={() => setIsOpen(true)}
       >
         <IconMenu />

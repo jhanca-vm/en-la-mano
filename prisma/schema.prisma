@@ -20,7 +20,7 @@ model User {
   dateOfBirth   String?
   workStartDate String?
   email         String?
-  updatedAt     DateTime
+  createdAt     DateTime @default(now())
 }
 
 model Complaint {

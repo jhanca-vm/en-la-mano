@@ -9,7 +9,7 @@ import { publicKey } from '@/lib/keys'
 function formatDates(user: User) {
   const formatDate = (date: Date | string) => format(date, 'YYYY-MM-DD')
 
-  user.updatedAt = formatDate(user.updatedAt) as any
+  user.createdAt = formatDate(user.createdAt) as any
 
   if (user.dateOfBirth) {
     user.dateOfBirth = formatDate(parse(user.dateOfBirth, 'DD/MM/YYYY'))
@@ -39,15 +39,15 @@ export const GET: APIRoute = async ({ url }) => {
         data
           .filter(
             (user) =>
-              user.updatedAt.getFullYear() === Number(year) &&
-              user.updatedAt.getMonth() + 1 === Number(month)
+              user.createdAt.getFullYear() === Number(year) &&
+              user.createdAt.getMonth() + 1 === Number(month)
           )
           .map(formatDates)
       )
     } else if (year) {
       csv = parser.parse(
         data
-          .filter((user) => user.updatedAt.getFullYear() === Number(year))
+          .filter((user) => user.createdAt.getFullYear() === Number(year))
           .map(formatDates)
       )
     } else {

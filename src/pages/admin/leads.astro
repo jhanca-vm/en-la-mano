@@ -6,13 +6,13 @@ import DownloadCSV from '@/components/DownloadCSV'
 
 const token = Astro.cookies.get('token')!.value
 const users = await prisma.user.findMany({
-  orderBy: { updatedAt: 'desc' },
+  orderBy: { createdAt: 'desc' },
   take: 50
 })
 ---
 
 <CMSLayout>
-  <section class="my-16">
+  <section class="mt-4 mb-16">
     <DownloadCSV token={token} users={users} client:load />
     <div class="overflow-x-auto">
       <table class="w-full">
@@ -55,7 +55,7 @@ const users = await prisma.user.findMany({
                 <td>
                   <p class="font-normal">{user.source}</p>
                   <p class="text-purple-900 ">
-                    {format(user.updatedAt, 'medium', 'es-UY')}
+                    {format(user.createdAt, 'medium', 'es-UY')}
                   </p>
                 </td>
                 <td>

@@ -9,7 +9,7 @@ import prisma from '@/lib/prisma'
 const { CRM_URL, REALM } = import.meta.env
 
 export default defineAction({
-  input: z.object({ script: z.number(), data: z.record(z.string()) }),
+  input: z.object({ script: z.number(), data: z.record(z.any()) }),
   async handler({ script, data }) {
     let { id, docNumber, ...rest } = data
 
@@ -35,10 +35,7 @@ export default defineAction({
         paseto.V4.sign(success ? { docNumber } : { result }, privateKey, {
           expiresIn: '1 m'
         }),
-        prisma.user.update({
-          where: { id },
-          data: { result, updatedAt: new Date(), ...rest }
-        })
+        prisma.user.update({ where: { id }, data: { result, ...rest } })
       ])
 
       if (response.status === 'fulfilled') token = response.value
@@ -49,9 +46,7 @@ export default defineAction({
         paseto.V4.sign(success ? { id, docNumber } : { result }, privateKey, {
           expiresIn: '1 m'
         }),
-        prisma.user.create({
-          data: { id, docNumber, result, updatedAt: new Date(), ...rest }
-        })
+        prisma.user.create({ data: { id, docNumber, result, ...rest } })
       ])
 
       if (response.status === 'fulfilled') token = response.value

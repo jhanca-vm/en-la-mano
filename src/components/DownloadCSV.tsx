@@ -18,7 +18,7 @@ export default function DownloadCSV({ token, users }: Props) {
   if (month) pathname += `&month=${month}`
 
   return (
-    <div className="mb-4 flex items-center gap-2">
+    <div className="mb-5 flex justify-end items-center gap-2">
       <Select
         value={year}
         onChange={({ target: { value } }) => {
@@ -28,7 +28,7 @@ export default function DownloadCSV({ token, users }: Props) {
       >
         <option value="">Año</option>
         {Array.from(
-          new Set(users.map((user) => user.updatedAt.getFullYear()))
+          new Set(users.map((user) => user.createdAt.getFullYear()))
         ).map((year) => (
           <option key={year}>{year}</option>
         ))}
@@ -40,14 +40,14 @@ export default function DownloadCSV({ token, users }: Props) {
       >
         <option value="">Mes</option>
         {Array.from(
-          new Set(users.map((user) => user.updatedAt.getMonth() + 1))
+          new Set(users.map((user) => user.createdAt.getMonth() + 1))
         ).map((month) => (
           <option key={month}>{month}</option>
         ))}
       </Select>
       <a
         className={clsx(
-          'px-5 py-2 rounded-full bg-orange-500 text-neutral-100',
+          'px-5 py-2.25 rounded-full bg-orange-500 text-neutral-100',
           'hover:bg-orange-500/90'
         )}
         href={pathname}
