@@ -26,7 +26,7 @@ export default function Button({
       ref={ref}
       className={clsx(
         className,
-        'group py-2 px-5 rounded-full bg-orange-500 text-neutral-100',
+        'group py-1.5 px-5 rounded-full bg-orange-500 text-neutral-100',
         'hover:bg-orange-500/90 disabled:bg-orange-500/neutral-100',
         'focus-visible:outline-2 focus-visible:outline-offset-2',
         'focus-visible:outline-blue-900'

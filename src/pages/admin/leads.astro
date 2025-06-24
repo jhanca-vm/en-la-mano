@@ -14,9 +14,9 @@ const users = await prisma.user.findMany({
 <CMSLayout>
   <section class="mt-4 mb-16">
     <DownloadCSV token={token} users={users} client:load />
-    <div class="overflow-x-auto">
+    <div class="overflow-auto max-h-[calc(100svh-(--spacing(36)))]">
       <table class="w-full">
-        <thead>
+        <thead class="sticky top-0 shadow-xs bg-white">
           <tr class="text-left *:py-2 *:px-4 *:font-medium *:truncate">
             <th></th>
             <th></th>

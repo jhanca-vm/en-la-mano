@@ -1,22 +1,23 @@
 import { ActionError, defineAction } from 'astro:actions'
-import { z } from 'astro:schema'
-import { Admin, db } from 'astro:db'
 import argon2 from 'argon2'
-import paseto from 'paseto'
-import { privateKey } from '@/lib/keys'
+import qrcode from 'qrcode'
+import prisma from '@/lib/prisma'
+import { authenticator } from 'otplib'
 
 export default defineAction({
   accept: 'form',
-  input: z.object({ username: z.string(), password: z.string() }),
-  async handler({ username, password }, context) {
-    const [admin] = await db.select().from(Admin)
+  async handler(formData, context) {
+    const { username, password } = Object.fromEntries<any>(formData)
+    const admin = await prisma.admin.findUnique({ where: { username } })
 
-    if (username === admin.username) {
-      if (await argon2.verify(admin.hash, password)) {
-        const token = await paseto.V4.sign({ username }, privateKey)
+    if (admin && (await argon2.verify(admin.hash, password))) {
+      if (admin.secret) return { secret: admin.secret }
 
-        context.cookies.set('token', token)
-      }
+      const secret = authenticator.generateSecret()
+      const keyuri = authenticator.keyuri(username, 'En La Mano', secret)
+      const qr = await qrcode.toDataURL(keyuri)
+
+      return { secret, qr }
     }
 
     throw new ActionError({

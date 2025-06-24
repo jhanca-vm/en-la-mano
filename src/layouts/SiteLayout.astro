@@ -12,6 +12,7 @@ import BaseLayout from './BaseLayout.astro'
 
 interface Props {
   class?: string
+  title?: string
 }
 
 interface Data {
@@ -20,6 +21,7 @@ interface Data {
 }
 
 const { pathname, origin } = Astro.url
+const { class: className, title } = Astro.props
 const isLanding = pathname === '/' || pathname.startsWith('/landing/')
 const [result] = await db.select().from(Page).where(eq(Page.pattern, '*'))
 const data = result.data as Data
@@ -30,6 +32,7 @@ const data = result.data as Data
     'flex flex-col bg-linear-108 from-purple-500 from-[-18.5%] via-purple-900',
     'via-34% to-blue-950 to-[88.5%] text-neutral-100'
   ]}
+  title={title}
 >
   <Fragment slot="head">
     <script is:inline>
@@ -56,7 +59,7 @@ const data = result.data as Data
   </noscript>
   <header
     class:list={[
-      Astro.props.class,
+      className,
       { 'sticky top-0 md:-top-4': isLanding },
       'inset-x-0 z-10 flex'
     ]}
@@ -92,15 +95,15 @@ const data = result.data as Data
   <Footer facebook={data.facebook} instagram={data.instagram} />
   <div
     class:list={[
-      'fixed bottom-3 right-5 flex gap-3 *:hover:scale-105 md:right-10',
+      'fixed bottom-2.5 right-5 flex gap-2.5 *:hover:scale-105 md:right-10',
       'xl:right-15'
     ]}
   >
     <a href="/normas-unit">
-      <Image class="w-13" src={unit} alt="Normas UNIT" />
+      <Image class="w-12" src={unit} alt="Normas UNIT" />
     </a>
     <a href="https://wa.me/59891866565" target="_blank" rel="noreferrer">
-      <Image class="w-13" src={whatsapp} alt="WhatsApp" />
+      <Image class="w-12" src={whatsapp} alt="WhatsApp" />
     </a>
   </div>
 </BaseLayout>

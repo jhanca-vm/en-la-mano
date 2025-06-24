@@ -4,7 +4,7 @@ export default function IconArrow() {
   return (
     <span
       className={clsx(
-        'ml-3 -mr-2.5 size-4.5 grid place-items-center rounded-full',
+        'ml-3 -mr-3 size-5 grid place-items-center rounded-full',
         'bg-neutral-100'
       )}
     >

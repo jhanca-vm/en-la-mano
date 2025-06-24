@@ -1,9 +1,13 @@
 import { useState } from 'react'
+import { navigate } from 'astro:transitions/client'
 import clsx from 'clsx/lite'
 import IconMenu from './icons/Menu'
+import ChangePassword from './ChangePassword'
+import Button from './Button'
 
 interface Props {
   pathname: string
+  username?: string
 }
 
 const links = [
@@ -25,7 +29,7 @@ const links = [
   }
 ]
 
-export default function Sidebar({ pathname }: Props) {
+export default function Sidebar({ pathname, username }: Props) {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
@@ -64,6 +68,17 @@ export default function Sidebar({ pathname }: Props) {
               {label}
             </a>
           ))}
+          <div className="mt-auto pt-5 flex flex-col items-start gap-2">
+            <ChangePassword username={username} />
+            <Button
+              onClick={async () => {
+                document.cookie = 'token=; max-age=0;'
+                await navigate('/login')
+              }}
+            >
+              Cerrar Sesión
+            </Button>
+          </div>
         </nav>
       </aside>
     </>

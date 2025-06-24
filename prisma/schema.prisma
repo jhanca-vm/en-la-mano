@@ -7,6 +7,12 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model Admin {
+  username String @id
+  hash     String
+  secret   String?
+}
+
 model User {
   id            String   @id
   docNumber     String

@@ -14,7 +14,7 @@ const [result] = await db.select().from(Page).where(eq(Page.pattern, pathname))
 const { description, questions } = result.data as Data
 ---
 
-<SiteLayout class="absolute">
+<SiteLayout class="absolute" title="Preguntas Frecuentes">
   <Hero
     class="bg-[url(/images/support-hero.webp)]"
     title="Preguntas Frecuentes"

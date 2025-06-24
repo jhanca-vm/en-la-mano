@@ -41,8 +41,8 @@ export default function Textarea({
           'w-full py-2 px-5 rounded-[1.25rem] font-display text-sm',
           !rows && 'field-sizing-content',
           'resize-none outline-1 -outline-offset-1',
-          'outline-blue-950 placeholder:text-neutral-400 focus:outline-2',
-          'focus:-outline-offset-2 focus:outline-orange-500'
+          'outline-blue-950 focus:outline-2 focus:-outline-offset-2',
+          'focus:outline-orange-500'
         )}
         name={name}
         id={id}

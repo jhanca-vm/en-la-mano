@@ -21,7 +21,7 @@ const [result] = await db.select().from(Page).where(eq(Page.pattern, '*'))
 const { instagram, facebook } = result.data as Data
 ---
 
-<SiteLayout class="absolute">
+<SiteLayout class="absolute" title="Contacto">
   <Hero class="bg-[url(/images/contact-hero.webp)]" title="Contacto" />
   <section
     class:list={[

@@ -3,12 +3,17 @@ import paseto from 'paseto'
 import { publicKey } from './lib/keys'
 
 export const onRequest = defineMiddleware(
-  async ({ url: { pathname }, cookies, redirect }, next) => {
+  async ({ url: { pathname }, cookies, locals, redirect }, next) => {
     if (pathname.startsWith('/admin')) {
       const token = cookies.get('token')
 
       try {
-        await paseto.V4.verify(token?.value || '', publicKey)
+        const { username } = await paseto.V4.verify(
+          token?.value || '',
+          publicKey
+        )
+
+        locals.username = username
       } catch {
         return redirect('/login')
       }

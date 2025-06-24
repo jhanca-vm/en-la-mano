@@ -1,0 +1,13 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import Form from './_Form'
+---
+
+<BaseLayout
+  class:list={[
+    'py-10 p-5 flex bg-linear-108 from-purple-500 from-[-18.5%]',
+    'via-purple-900 via-34% to-blue-950 to-[88.5%]'
+  ]}
+>
+  <Form client:load />
+</BaseLayout>

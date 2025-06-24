@@ -15,7 +15,7 @@ const [result] = await db.select().from(Page).where(eq(Page.pattern, pathname))
 const data = result.data as Data
 ---
 
-<SiteLayout class="absolute">
+<SiteLayout class="absolute" title="Quiénes somos">
   <Hero class="bg-[url(/images/about-hero.webp)]" title="Quiénes somos" />
   <section
     class:list={[

@@ -47,8 +47,8 @@ export default function Input({
         className={clsx(
           'w-full py-3 px-5 rounded-4xl font-display text-sm outline-1',
           error ? 'outline-red-600' : 'outline-blue-950',
-          '-outline-offset-1 placeholder:text-neutral-400',
-          'focus:outline-2 focus:-outline-offset-2 focus:outline-orange-500'
+          '-outline-offset-1 focus:outline-2 focus:-outline-offset-2',
+          'focus:outline-purple-900'
         )}
         type={type || 'text'}
         name={name}
