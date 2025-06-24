@@ -13,7 +13,7 @@ export const onRequest = defineMiddleware(
           publicKey
         )
 
-        locals.username = username
+        locals.username = username as string
       } catch {
         return redirect('/login')
       }

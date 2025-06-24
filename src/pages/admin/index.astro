@@ -4,7 +4,6 @@ import CMSLayout from '@/layouts/CMSLayout.astro'
 import InputImage from '@/components/InputImage'
 import Input from '@/components/Input'
 import Textarea from '@/components/Textarea'
-import CreateAdmin from '@/components/CreateAdmin'
 
 interface Data {
   facebook: string
@@ -45,9 +44,4 @@ const data = result.data as Data
       defaultValue={data.formDescription}
     />
   </div>
-  {
-    Astro.locals.username === 'adminelm' && (
-      <CreateAdmin slot="outside" client:idle />
-    )
-  }
 </CMSLayout>

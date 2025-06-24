@@ -7,11 +7,36 @@ interface Props {
   pattern?: string
 }
 
+const { username } = Astro.locals
 const { pattern } = Astro.props
+
+const links = [
+  { href: '/admin', label: 'En La Mano' },
+  { href: '/admin/leads', label: 'Leads Generados' },
+  { href: '/admin/reclamos', label: 'Reclamos' },
+  { href: '/admin/landings', label: 'Landings' },
+  { href: '/admin/quienes-somos', label: 'Quiénes Somos' },
+  { href: '/admin/preguntas-frecuentes', label: 'Preguntas Frecuentes' },
+  { href: '/admin/terminos-y-condiciones', label: 'Términos y Condiciones' },
+  {
+    href: '/admin/politicas-de-privacidad',
+    label: 'Políticas de Privacidad'
+  },
+  { href: '/admin/politicas-de-seguridad', label: 'Políticas de Seguridad' },
+  {
+    href: '/admin/bases-y-condiciones-de-sorteos',
+    label: 'Bases y Condiciones de Sorteos'
+  }
+]
+
+if (username === 'adminelm') {
+  links.push({ href: '/admin/usuarios', label: 'Usuarios' })
+}
 ---
 
 <BaseLayout class="bg-neutral-100 text-blue-900 md:flex">
   <Sidebar
+    links={links}
     pathname={Astro.url.pathname}
     username={Astro.locals.username}
     client:load
@@ -35,7 +60,6 @@ const { pattern } = Astro.props
         <slot />
       )
     }
-    <slot name="outside" />
   </main>
 </BaseLayout>
 
